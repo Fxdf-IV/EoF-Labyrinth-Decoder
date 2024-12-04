@@ -6,10 +6,13 @@ import tkinter as tk
 from tkinter import ttk
 import os
 from PIL import Image, ImageTk
+from pathlib import Path
 
 class IntroTab(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
+        # Obtém o caminho base do projeto
+        self.base_path = Path(__file__).parent.parent.parent
         self.setup_ui()
         
     def setup_ui(self):
@@ -63,14 +66,15 @@ class IntroTab(ttk.Frame):
 
         # Imagem dos itens
         try:
-            img_itens = Image.open("src/assets/images/itens.jpg")
+            img_path = self.base_path / "src" / "assets" / "images" / "itens.jpg"
+            img_itens = Image.open(str(img_path))
             img_itens = ImageTk.PhotoImage(img_itens)
             itens_label = ttk.Label(self.inner_frame, image=img_itens)
             itens_label.image = img_itens
             itens_label.pack(pady=10)
         except Exception as e:
             error_label = ttk.Label(self.inner_frame,
-                text="Erro ao carregar imagem dos itens",
+                text=f"Erro ao carregar imagem dos itens: {str(e)}",
                 foreground='red')
             error_label.pack(pady=5)
         
@@ -111,14 +115,15 @@ class IntroTab(ttk.Frame):
         
         # Alfabeto
         try:
-            img_alfabeto = Image.open("src/assets/images/alfabeto.jpg")
+            img_path = self.base_path / "src" / "assets" / "images" / "alfabeto.jpg"
+            img_alfabeto = Image.open(str(img_path))
             img_alfabeto = ImageTk.PhotoImage(img_alfabeto)
             alfabeto_label = ttk.Label(self.inner_frame, image=img_alfabeto)
             alfabeto_label.image = img_alfabeto
             alfabeto_label.pack(pady=10)
         except Exception as e:
             error_label = ttk.Label(self.inner_frame,
-                text="Erro ao carregar imagem do alfabeto",
+                text=f"Erro ao carregar imagem do alfabeto: {str(e)}",
                 foreground='red')
             error_label.pack(pady=5)
 

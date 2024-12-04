@@ -18,8 +18,8 @@ from src.ui.image_tab import ImageDecoderTab as ImageTab
 from src.ui.audio_tab import AudioDecoderTab as AudioTab
 
 class MainWindow:
-    def __init__(self):
-        self.root = tk.Tk()
+    def __init__(self, root):
+        self.root = root
         self.setup_window()
         self.setup_style()
         self.setup_notebook()
@@ -116,7 +116,8 @@ class MainWindow:
         self.root.mainloop()
 
 def main():
-    app = MainWindow()
+    root = tk.Tk()
+    app = MainWindow(root)
     app.run()
     
 if __name__ == "__main__":
