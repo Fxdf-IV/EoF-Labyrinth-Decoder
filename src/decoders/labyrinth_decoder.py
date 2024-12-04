@@ -10,7 +10,7 @@ class LabyrinthDecoder:
             {
                 "name": "Crânio de Corvo",
                 "path_suffix": "Krev/Strach/Strach/Strach",
-                "sequence": "Este caminho contém uma sequência importante. Relacionado a sangue. Envolve medo.",
+                "sequence": "Sangue, Medo, Medo, Medo",
                 "files": "Cornix",
                 "computer_hint": "simples como ler sigilos",
                 "technical_hint": "Observe os sigilos e as inscrições que os cercam. A sequência repetitiva pode conter a chave para decifrar o significado central. Leia cuidadosamente os detalhes destacados. USE O ALFABETO."
@@ -18,7 +18,7 @@ class LabyrinthDecoder:
             {
                 "name": "Monóculo Quebrado",
                 "path_suffix": "Smrt/Krev/Znalost/Znalost",
-                "sequence": "Este caminho contém uma sequência importante. Relacionado a sangue. Tem conexão com morte. Requer conhecimento.",
+                "sequence": "Morte, Sangue, Conhecimento, Conhecimento",
                 "files": "Newton, Visio",
                 "computer_hint": "7 elas são",
                 "technical_hint": "Os valores hexadecimais correspondem a algo visível em uma sequência específica. Analise as cores e relacione-as com os padrões exibidos."
@@ -26,7 +26,7 @@ class LabyrinthDecoder:
             {
                 "name": "Garrafa Aqua Amassada",
                 "path_suffix": "Strach/Krev/Krev/Smrt",
-                "sequence": "Este caminho contém uma sequência importante. Relacionado a energia e medo.",
+                "sequence": "Medo, Sangue, Sangue, Morte",
                 "files": "Aqua",
                 "computer_hint": "toc toc.",
                 "technical_hint": "Preste atenção nos sons emitidos. Sequências repetitivas podem formar um padrão significativo."
@@ -34,7 +34,7 @@ class LabyrinthDecoder:
             {
                 "name": "Disco DEMO",
                 "path_suffix": "Smrt/Energie/Energie/Energie",
-                "sequence": "Conhecimento leva à energia e morte.",
+                "sequence": "Morte, Energia, Energia, Energia",
                 "files": "Demo_disc",
                 "computer_hint": "Siga o padrão",
                 "technical_hint": "Formas geométricas podem indicar caminhos ocultos. Examine atentamente os padrões nos círculos."
@@ -42,7 +42,7 @@ class LabyrinthDecoder:
             {
                 "name": "Pote de Vidro com Algo Suspeito Dentro",
                 "path_suffix": "Znalost/Energie/Energie/Znalost",
-                "sequence": "Medo se transforma em sangue e energia.",
+                "sequence": "Conhecimento, Energia, Energia, Conhecimento",
                 "files": "Jar_content",
                 "computer_hint": "Tátil",
                 "technical_hint": "Examine o conteúdo com cuidado. O alinhamento de pequenos detalhes pode conter uma sequência importante."
@@ -50,7 +50,7 @@ class LabyrinthDecoder:
             {
                 "name": "Bola Mágica 8",
                 "path_suffix": "Krev/Znalost/Krev/Krev",
-                "sequence": "Conhecimento da morte traz medo.",
+                "sequence": "Sangue, Conhecimento, Sangue, Sangue",
                 "files": "Magic_8",
                 "computer_hint": "a hora mais importante.",
                 "technical_hint": "O tempo e os números podem revelar algo. Observe atentamente os detalhes no momento certo."
@@ -58,7 +58,7 @@ class LabyrinthDecoder:
             {
                 "name": "Vaquinha",
                 "path_suffix": "Znalost/Strach/Smrt/Smrt",
-                "sequence": "Sangue alimenta energia e conhecimento.",
+                "sequence": "Conhecimento, Medo, Morte, Morte",
                 "files": "Cow",
                 "computer_hint": "zero dimensões.",
                 "technical_hint": "Reduza a intensidade da luz ao observar. Formas ocultas podem emergir de detalhes aparentemente simples."
@@ -66,7 +66,7 @@ class LabyrinthDecoder:
             {
                 "name": "Brinquedo Cachorro-bola",
                 "path_suffix": "Energie/Znalost/Smrt/Krev",
-                "sequence": "Medo da morte leva ao sangue.",
+                "sequence": "Energia, Conhecimento, Morte, Sangue",
                 "files": "Dog_ball",
                 "computer_hint": "mínimo",
                 "technical_hint": "Movimentos calculados podem ser a chave. Reduza o esforço ao mínimo para revelar o significado oculto."
@@ -74,7 +74,7 @@ class LabyrinthDecoder:
             {
                 "name": "Filtro dos Sonhos",
                 "path_suffix": "Krev/Smrt/Energie/Energie",
-                "sequence": "Energia do conhecimento gera medo.",
+                "sequence": "Sangue, Morte, Energia, Energia",
                 "files": "Dreamcatcher",
                 "computer_hint": " _ ▭ x",
                 "technical_hint": "Nem tudo está em primeiro plano. Experimente diferentes interações para trazer algo à tona."
@@ -82,7 +82,7 @@ class LabyrinthDecoder:
             {
                 "name": "Boné de Sapo",
                 "path_suffix": "Znalost/Strach/Strach/Krev",
-                "sequence": "Morte e medo geram energia.",
+                "sequence": "Conhecimento, Medo, Medo, Sangue",
                 "files": "Frog_cap",
                 "computer_hint": "Trace o caminho.",
                 "technical_hint": "Siga as direções indicadas por sinais. Cada movimento pode desbloquear algo novo."
@@ -90,7 +90,7 @@ class LabyrinthDecoder:
             {
                 "name": "Relógio de Gatinho",
                 "path_suffix": "Krev/Smrt/Strach/Smrt",
-                "sequence": "Conhecimento do sangue leva à morte.",
+                "sequence": "Sangue, Morte, Medo, Morte",
                 "files": "Cat_clock",
                 "computer_hint": "como falar com um avião.",
                 "technical_hint": "Pistas visuais podem estar conectadas. Interprete sinais gráficos com base em suas posições relativas."
@@ -98,7 +98,7 @@ class LabyrinthDecoder:
             {
                 "name": "Mantega",
                 "path_suffix": "Znalost/Krev/Strach/Krev",
-                "sequence": "Sangue da morte gera energia.",
+                "sequence": "Conhecimento, Sangue, Medo, Sangue",
                 "files": "Butter",
                 "computer_hint": "Porco.",
                 "technical_hint": "Uma sequência não-linear pode fazer sentido. Reorganize os elementos com lógica."
@@ -106,7 +106,7 @@ class LabyrinthDecoder:
             {
                 "name": "Moeda",
                 "path_suffix": "Znalost/Znalost/Energie/Smrt",
-                "sequence": "Energia do sangue traz conhecimento.",
+                "sequence": "Conhecimento, Conhecimento, Energia, Morte",
                 "files": "Coin",
                 "computer_hint": "observe o ruído",
                 "technical_hint": "Sinais audíveis ou visíveis podem ser transformados. Concentre-se em padrões discretos."
@@ -114,7 +114,7 @@ class LabyrinthDecoder:
             {
                 "name": "Baú",
                 "path_suffix": "Krev/Znalost/Smrt/Smrt",
-                "sequence": "Medo do conhecimento leva à morte.",
+                "sequence": "Sangue, Conhecimento, Morte, Morte",
                 "files": "Chest",
                 "computer_hint": "Tabula Recta",
                 "technical_hint": "Métodos tradicionais podem ajudar. Descubra como diferentes elementos se interligam."
@@ -122,7 +122,7 @@ class LabyrinthDecoder:
             {
                 "name": "Miniatura de Fusca Azul",
                 "path_suffix": "Smrt/Znalost/Smrt/Smrt",
-                "sequence": "Morte energizada pelo sangue.",
+                "sequence": "Morte, Conhecimento, Morte, Morte",
                 "files": "Blue_beetle",
                 "computer_hint": "Ouro.",
                 "technical_hint": "Pistas históricas ou culturais podem ser úteis. Explore a ligação entre referências e significados ocultos."
@@ -130,7 +130,7 @@ class LabyrinthDecoder:
             {
                 "name": "PenDrive Amassado",
                 "path_suffix": "Znalost/Smrt/Energie/Strach",
-                "sequence": "Conhecimento do medo leva ao sangue.",
+                "sequence": "Conhecimento, Morte, Energia, Medo",
                 "files": "Pendrive",
                 "computer_hint": "conecta-as.",
                 "technical_hint": "Partes separadas podem se unir. Conecte as informações dispersas para formar algo coeso."
@@ -138,34 +138,34 @@ class LabyrinthDecoder:
             {
                 "name": "Anel de Corvo",
                 "path_suffix": "Krev/Znalost/Energie/Energie",
-                "sequence": "Sangue do conhecimento gera energia.",
+                "sequence": "Sangue, Conhecimento, Energia, Energia",
                 "files": "Crow_ring",
                 "computer_hint": "1507580",
                 "technical_hint": "A busca por pistas pode levá-lo além do jogo. Investigue todas as possibilidades ao seu redor."
             },
             {
-                "name": "Bracelete Dourado",
-                "path_suffix": "Smrt/Energie/Strach/Krev",
-                "sequence": "Energia da morte traz medo.",
-                "files": "Golden_bracelet",
-                "computer_hint": "leia as fórmulas.",
-                "technical_hint": "As formas das fórmulas podem esconder algo essencial. Examine cada elemento para encontrar conexões inesperadas."
-            },
-            {
                 "name": "Fita K7",
-                "path_suffix": "Znalost/Krev/Strach/Krev",
-                "sequence": "Conhecimento do sangue traz medo.",
+                "path_suffix": "Znalost/Smrt/Strach/Strach",
+                "sequence": "Conhecimento, Morte, Medo, Medo",
                 "files": "K7",
                 "computer_hint": "2 etapas.",
                 "technical_hint": "Camadas de áudio podem conter segredos. Ajuste o ritmo ou explore outras formas de interpretação para decifrá-las."
             },
             {
+                "name": "Bracelete Dourado",
+                "path_suffix": "Smrt/Energie/Strach/Krev",
+                "sequence": "Morte, Energia, Medo, Sangue",
+                "files": "Golden_bracelet",
+                "computer_hint": "leia as fórmulas.",
+                "technical_hint": "As formas das fórmulas podem esconder algo essencial. Examine cada elemento para encontrar conexões inesperadas."
+            },
+            {
                 "name": "D20",
-                "path_suffix": "Znalost/Krev/Strach/Krev",
-                "sequence": "Conhecimento do sangue traz medo.",
+                "path_suffix": "resources/images/SIGILO D20.jpg",
+                "sequence": "O caminho é a resposta",
                 "files": "D20",
                 "computer_hint": "Menu.",
-                "technical_hint": "Padrões numéricos e conexões entre eles podem revelar algo único. Procure pelo inesperado em objetos geométricos."
+                "technical_hint": "O caminho é a resposta"
             }
         ]
 
