@@ -2,192 +2,117 @@
 Decodificador do labirinto
 """
 
-import os
+import logging
+from typing import Dict, Any
 
 class LabyrinthDecoder:
     def __init__(self):
-        self.items = [
-            {
-                "name": "Crânio de Corvo",
-                "path_suffix": "Krev/Strach/Strach/Strach",
-                "sequence": "Este caminho contém uma sequência importante. Relacionado a sangue. Envolve medo.",
-                "files": "Cornix",
-                "computer_hint": "Percorra o labirinto",
-                "technical_hint": "Observe os sigilos e as inscrições que os cercam. A sequência repetitiva pode conter a chave para decifrar o significado central. Leia cuidadosamente os detalhes destacados. USE O ALFABETO"
+        self.logger = logging.getLogger(__name__)
+        # Dicionário com as dicas do labirinto
+        self.hints = {
+            "Crânio de Corvo": {
+                "computer_hint": "simples como ler sigilos",
+                "technical_hint": "Observe os sigilos e as inscrições que os cercam. A sequência repetitiva pode conter a chave para decifrar o significado central. Leia cuidadosamente os detalhes destacados. USE O ALFABETO."
             },
-            {
-                "name": "Monóculo Quebrado",
-                "path_suffix": "Smrt/Krev/Znalost/Znalost",
-                "sequence": "Este caminho contém uma sequência importante. Relacionado a sangue. Tem conexão com morte. Requer conhecimento.",
-                "files": "Newton, Visio",
+            "Monóculo Quebrado": {
                 "computer_hint": "7 elas são",
                 "technical_hint": "Os valores hexadecimais correspondem a algo visível em uma sequência específica. Analise as cores e relacione-as com os padrões exibidos."
             },
-            {
-                "name": "Garrafa Aqua Amassada",
-                "path_suffix": "Strach/Krev/Krev/Smrt",
-                "sequence": "Este caminho contém uma sequência importante. Relacionado a energia e medo.",
-                "files": "Aqua",
-                "computer_hint": "Siga o fluxo da água",
-                "technical_hint": "Examine os padrões de fluxo e as marcações nas paredes. A direção e intensidade podem indicar um caminho específico."
+            "Garrafa Aqua Amassada": {
+                "computer_hint": "toc toc.",
+                "technical_hint": "Preste atenção nos sons emitidos. Sequências repetitivas podem formar um padrão significativo."
             },
-            {
-                "name": "Disco DEMO",
-                "path_suffix": "Smrt/Energie/Energie/Energie",
-                "sequence": "Conhecimento leva à energia e morte.",
-                "files": "Demo_disc",
-                "computer_hint": "A música guia o caminho",
-                "technical_hint": "As frequências sonoras podem revelar padrões ocultos. Preste atenção às variações rítmicas."
+            "Disco DEMO": {
+                "computer_hint": "Siga o padrão",
+                "technical_hint": "Formas geométricas podem indicar caminhos ocultos. Examine atentamente os padrões nos círculos."
             },
-            {
-                "name": "Pote de Vidro com Algo Suspeito Dentro",
-                "path_suffix": "Znalost/Energie/Energie/Znalost",
-                "sequence": "Medo se transforma em sangue e energia.",
-                "files": "Jar_content",
-                "computer_hint": "O conteúdo revela segredos",
-                "technical_hint": "Analise a composição e as reações químicas. Os elementos podem formar um padrão significativo."
+            "Pote de Vidro com Algo Suspeito Dentro": {
+                "computer_hint": "Tátil",
+                "technical_hint": "Examine o conteúdo com cuidado. O alinhamento de pequenos detalhes pode conter uma sequência importante."
             },
-            {
-                "name": "Bola Mágica 8",
-                "path_suffix": "Krev/Znalost/Krev/Krev",
-                "sequence": "Conhecimento da morte traz medo.",
-                "files": "Magic_8",
-                "computer_hint": "A resposta está nas estrelas",
-                "technical_hint": "Os padrões astrológicos e números podem conter mensagens codificadas."
+            "Bola Mágica 8": {
+                "computer_hint": "a hora mais importante.",
+                "technical_hint": "O tempo e os números podem revelar algo. Observe atentamente os detalhes no momento certo."
             },
-            {
-                "name": "Vaquinha",
-                "path_suffix": "Znalost/Strach/Smrt/Smrt",
-                "sequence": "Sangue alimenta energia e conhecimento.",
-                "files": "Cow",
-                "computer_hint": "Siga os rastros",
-                "technical_hint": "As pegadas e marcas no chão formam um padrão específico. Observe a direção e profundidade."
+            "Vaquinha": {
+                "computer_hint": "zero dimensões.",
+                "technical_hint": "Reduza a intensidade da luz ao observar. Formas ocultas podem emergir de detalhes aparentemente simples."
             },
-            {
-                "name": "Brinquedo Cachorro-bola",
-                "path_suffix": "Energie/Znalost/Smrt/Krev",
-                "sequence": "Medo da morte leva ao sangue.",
-                "files": "Dog_ball",
-                "computer_hint": "Brinque com as sombras",
-                "technical_hint": "As sombras projetadas podem revelar símbolos ocultos. Observe em diferentes ângulos."
+            "Brinquedo Cachorro-bola": {
+                "computer_hint": "mínimo",
+                "technical_hint": "Movimentos calculados podem ser a chave. Reduza o esforço ao mínimo para revelar o significado oculto."
             },
-            {
-                "name": "Filtro dos Sonhos",
-                "path_suffix": "Krev/Smrt/Energie/Energie",
-                "sequence": "Energia do conhecimento gera medo.",
-                "files": "Dreamcatcher",
-                "computer_hint": "Os sonhos mostram o caminho",
-                "technical_hint": "Os padrões da teia contêm uma sequência específica. Analise a geometria e símbolos."
+            "Filtro dos Sonhos": {
+                "computer_hint": " _ ▭ x",
+                "technical_hint": "Nem tudo está em primeiro plano. Experimente diferentes interações para trazer algo à tona."
             },
-            {
-                "name": "Boné de Sapo",
-                "path_suffix": "Znalost/Strach/Strach/Krev",
-                "sequence": "Morte e medo geram energia.",
-                "files": "Frog_cap",
-                "computer_hint": "Pule entre os portais",
-                "technical_hint": "A sequência de saltos forma um padrão. Observe os pontos de aterrissagem."
+            "Boné de Sapo": {
+                "computer_hint": "Trace o caminho.",
+                "technical_hint": "Siga as direções indicadas por sinais. Cada movimento pode desbloquear algo novo."
             },
-            {
-                "name": "Relógio de Gatinho",
-                "path_suffix": "Krev/Smrt/Strach/Smrt",
-                "sequence": "Conhecimento do sangue leva à morte.",
-                "files": "Cat_clock",
-                "computer_hint": "O tempo não para",
-                "technical_hint": "Os números e posições dos ponteiros formam uma sequência. Analise os intervalos."
+            "Relógio de Gatinho": {
+                "computer_hint": "como falar com um avião.",
+                "technical_hint": "Pistas visuais podem estar conectadas. Interprete sinais gráficos com base em suas posições relativas."
             },
-            {
-                "name": "Mantega",
-                "path_suffix": "Znalost/Krev/Strach/Krev",
-                "sequence": "Sangue da morte gera energia.",
-                "files": "Butter",
-                "computer_hint": "Derreta os símbolos",
-                "technical_hint": "O padrão de derretimento revela mensagens ocultas. Observe a ordem e direção."
+            "Mantega": {
+                "computer_hint": "Porco.",
+                "technical_hint": "Uma sequência não-linear pode fazer sentido. Reorganize os elementos com lógica."
             },
-            {
-                "name": "Moeda",
-                "path_suffix": "Znalost/Znalost/Energie/Smrt",
-                "sequence": "Energia do sangue traz conhecimento.",
-                "files": "Coin",
-                "computer_hint": "Duas faces da verdade",
-                "technical_hint": "As inscrições em ambos os lados formam um código. Compare e combine os símbolos."
+            "Moeda": {
+                "computer_hint": "observe o ruído",
+                "technical_hint": "Sinais audíveis ou visíveis podem ser transformados. Concentre-se em padrões discretos."
             },
-            {
-                "name": "Baú",
-                "path_suffix": "Krev/Znalost/Smrt/Smrt",
-                "sequence": "Medo do conhecimento leva à morte.",
-                "files": "Chest",
-                "computer_hint": "O tesouro está protegido",
-                "technical_hint": "A sequência de travas forma um padrão específico. Analise a ordem de desbloqueio."
+            "Baú": {
+                "computer_hint": "Tabula Recta",
+                "technical_hint": "Métodos tradicionais podem ajudar. Descubra como diferentes elementos se interligam."
             },
-            {
-                "name": "Miniatura de Fusca Azul",
-                "path_suffix": "Smrt/Znalost/Smrt/Smrt",
-                "sequence": "Morte energizada pelo sangue.",
-                "files": "Blue_beetle",
-                "computer_hint": "Siga as rodas",
-                "technical_hint": "As marcas das rodas formam um caminho específico. Observe a profundidade e direção."
+            "Miniatura de Fusca Azul": {
+                "computer_hint": "Ouro.",
+                "technical_hint": "Pistas históricas ou culturais podem ser úteis. Explore a ligação entre referências e significados ocultos."
             },
-            {
-                "name": "PenDrive Amassado",
-                "path_suffix": "Znalost/Smrt/Energie/Strach",
-                "sequence": "Conhecimento do medo leva ao sangue.",
-                "files": "Pendrive",
-                "computer_hint": "Os dados não mentem",
-                "technical_hint": "Os arquivos corrompidos contêm padrões. Analise os bytes e sequências binárias."
+            "PenDrive Amassado": {
+                "computer_hint": "conecta-as.",
+                "technical_hint": "Partes separadas podem se unir. Conecte as informações dispersas para formar algo coeso."
             },
-            {
-                "name": "Anel de Corvo",
-                "path_suffix": "Krev/Znalost/Energie/Energie",
-                "sequence": "Sangue do conhecimento gera energia.",
-                "files": "Crow_ring",
-                "computer_hint": "O círculo se fecha",
-                "technical_hint": "As inscrições no anel formam uma sequência circular. Observe o ponto de início."
+            "Anel de Corvo": {
+                "computer_hint": "1507580",
+                "technical_hint": "A busca por pistas pode levá-lo além do jogo. Investigue todas as possibilidades ao seu redor."
             },
-            {
-                "name": "Bracelete Dourado",
-                "path_suffix": "Smrt/Energie/Strach/Krev",
-                "sequence": "Energia da morte traz medo.",
-                "files": "Golden_bracelet",
-                "computer_hint": "O brilho guia",
-                "technical_hint": "Os padrões de reflexão formam símbolos específicos. Analise em diferentes intensidades de luz."
+            "Bracelete Dourado": {
+                "computer_hint": "leia as fórmulas.",
+                "technical_hint": "As formas das fórmulas podem esconder algo essencial. Examine cada elemento para encontrar conexões inesperadas."
             },
-            {
-                "name": "Chave do Labirinto",
-                "path_suffix": "Strach/Energie/Znalost",
-                "sequence": "Medo da energia traz conhecimento.",
-                "files": "Maze_key",
-                "computer_hint": "A chave final",
-                "technical_hint": "As ranhuras da chave formam um código específico. Compare com os padrões das fechaduras."
+            "Fita K7": {
+                "computer_hint": "2 etapas.",
+                "technical_hint": "Camadas de áudio podem conter segredos. Ajuste o ritmo ou explore outras formas de interpretação para decifrá-las."
             },
-            {
-                "name": "Grimório",
-                "path_suffix": "Znalost/Krev/Strach/Krev",
-                "sequence": "Conhecimento do sangue traz medo.",
-                "files": "Grimoire",
-                "computer_hint": "As páginas sussurram",
-                "technical_hint": "As páginas contêm padrões ocultos. Analise a ordem e símbolos em cada página."
+            "D20": {
+                "computer_hint": "Menu.",
+                "technical_hint": "Padrões numéricos e conexões entre eles podem revelar algo único. Procure pelo inesperado em objetos geométricos."
             }
-        ]
+        }
 
-    def decode_labyrinth(self, base_path):
-        """Decodifica o labirinto a partir do caminho base fornecido"""
-        results = []
-        
-        for item in self.items:
-            # Constrói o caminho completo usando apenas barras /
-            full_path = os.path.join(base_path, item["path_suffix"]).replace("\\", "/")
-            
-            # Cria uma cópia do item e adiciona o caminho completo
-            result = item.copy()
-            result["path"] = full_path
-            
-            results.append({
-                "name": result["name"],
-                "path": result["path"],
-                "sequence": result["sequence"],
-                "files": result["files"],
-                "computer_hint": result["computer_hint"],
-                "technical_hint": result["technical_hint"]
-            })
-        
-        return results
+    def get_hint(self, item_name: str) -> Dict[str, str]:
+        """
+        Retorna as dicas para um item específico
+        """
+        try:
+            if item_name in self.hints:
+                return self.hints[item_name]
+            else:
+                return {
+                    "computer_hint": "Item não encontrado",
+                    "technical_hint": "Item não encontrado no banco de dados"
+                }
+        except Exception as e:
+            self.logger.error(f"Erro ao buscar dica: {str(e)}")
+            return {
+                "computer_hint": "Erro ao buscar dica",
+                "technical_hint": "Ocorreu um erro ao buscar a dica"
+            }
+
+    def list_items(self) -> list:
+        """
+        Retorna a lista de todos os itens disponíveis
+        """
+        return list(self.hints.keys())
