@@ -1,104 +1,116 @@
 """
-Janela principal do decodificador
+Janela principal do aplicativo
 """
 
-import os
-import sys
 import tkinter as tk
 from tkinter import ttk
+import sys
+import os
 
 # Adiciona o diretório raiz ao PYTHONPATH
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(root_dir)
 
 from src.ui.labyrinth_tab import LabyrinthTab
 from src.ui.intro_tab import IntroTab
-from src.ui.text_tab import TextDecoderTab
-from src.ui.image_tab import ImageDecoderTab
-from src.ui.audio_tab import AudioDecoderTab
+from src.ui.text_tab import TextTab
+from src.ui.image_tab import ImageDecoderTab as ImageTab
+from src.ui.audio_tab import AudioDecoderTab as AudioTab
 
 class MainWindow:
     def __init__(self):
         self.root = tk.Tk()
         self.setup_window()
-        self.setup_tabs()
+        self.setup_style()
+        self.setup_notebook()
         
     def setup_window(self):
+        """Configura a janela principal"""
+        # Configurações da janela
         self.root.title("EoF Labyrinth Decoder")
-        self.root.geometry("800x600")
+        self.root.geometry("1024x768")
         
-        # Configuração do tema escuro
+        # Configura o grid
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+        
+        # Cor de fundo
+        self.root.configure(bg='black')
+        
+    def setup_style(self):
+        """Configura o estilo da interface"""
         style = ttk.Style()
-        style.theme_use('alt')  # Usa o tema alternativo como base
         
-        # Configurações gerais
-        style.configure(".", 
-            background='black',
-            foreground='#00ff00',
-            fieldbackground='black',
-            troughcolor='black',
-            arrowcolor='#00ff00')
+        # Configura o tema
+        style.theme_use('default')
         
-        # Configuração específica para cada tipo de widget
-        style.configure("TNotebook", background='black', borderwidth=0)
-        style.configure("TNotebook.Tab", 
-            background='black',
-            foreground='#00ff00',
-            borderwidth=1,
-            bordercolor='#00ff00',
-            padding=5)
-        style.configure("TFrame", background='black')
-        style.configure("TLabel", background='black', foreground='#00ff00')
-        style.configure("TButton",
-            background='black',
-            foreground='#00ff00',
-            bordercolor='#00ff00',
-            relief='solid',
-            borderwidth=1)
+        # Configuração do notebook
+        style.configure('TNotebook',
+                      background='black',
+                      borderwidth=0)
+        style.configure('TNotebook.Tab',
+                      background='black',
+                      foreground='#00ff00',
+                      padding=[10, 2],
+                      font=('Consolas', 10))
+        style.map('TNotebook.Tab',
+                 background=[('selected', '#003300')],
+                 foreground=[('selected', '#00ff00')])
         
-        # Configuração dos estados dos widgets
-        style.map("TNotebook.Tab",
-            background=[('selected', 'black'),
-                       ('active', 'black'),
-                       ('!selected', 'black')],
-            foreground=[('selected', '#00ff00'),
-                       ('active', '#00ff00'),
-                       ('!selected', '#00ff00')])
-                       
-        style.map("TButton",
-            background=[('active', 'black'),
-                       ('pressed', 'black'),
-                       ('disabled', 'black')],
-            foreground=[('active', '#00ff00'),
-                       ('pressed', '#00ff00'),
-                       ('disabled', '#00ff00')])
+        # Configuração dos frames
+        style.configure('TFrame',
+                      background='black')
         
-        # Configuração da janela principal
-        self.root.configure(background='black')
+        # Configuração das labels
+        style.configure('TLabel',
+                      background='black',
+                      foreground='#00ff00',
+                      font=('Consolas', 10))
         
-    def setup_tabs(self):
-        # Notebook para as abas
+        # Configuração dos botões
+        style.configure('TButton',
+                      background='black',
+                      foreground='#00ff00',
+                      borderwidth=1,
+                      font=('Consolas', 10))
+        style.map('TButton',
+                 background=[('active', '#003300')],
+                 foreground=[('active', '#00ff00')])
+                 
+        # Configuração da scrollbar
+        style.configure('TScrollbar',
+                      background='black',
+                      bordercolor='#00ff00',
+                      arrowcolor='#00ff00',
+                      troughcolor='black')
+                      
+        # Configuração do radiobutton
+        style.configure('TRadiobutton',
+                      background='black',
+                      foreground='#00ff00',
+                      font=('Consolas', 10))
+        
+    def setup_notebook(self):
+        """Configura o notebook com as abas"""
+        # Cria o notebook
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
-        # Aba inicial com informações
-        intro_tab = IntroTab(self.notebook)
-        self.notebook.add(intro_tab, text="Informações")
+        # Adiciona as abas
+        self.intro_tab = IntroTab(self.notebook)
+        self.notebook.add(self.intro_tab, text="Informações")
         
-        # Aba do decodificador do labirinto
-        labyrinth_tab = LabyrinthTab(self.notebook)
-        self.notebook.add(labyrinth_tab, text="Labyrinth Decoder")
+        self.labyrinth_tab = LabyrinthTab(self.notebook)
+        self.notebook.add(self.labyrinth_tab, text="Labyrinth Decoder")
         
-        # Aba do decodificador de texto
-        text_tab = TextDecoderTab(self.notebook)
-        self.notebook.add(text_tab, text="Text Decoder")
+        self.text_tab = TextTab(self.notebook)
+        self.notebook.add(self.text_tab, text="Text Decoder")
         
-        # Aba do decodificador de imagem
-        image_tab = ImageDecoderTab(self.notebook)
-        self.notebook.add(image_tab, text="Image Decoder")
+        self.image_tab = ImageTab(self.notebook)
+        self.notebook.add(self.image_tab, text="Image Decoder")
         
-        # Aba do decodificador de áudio
-        audio_tab = AudioDecoderTab(self.notebook)
-        self.notebook.add(audio_tab, text="Audio Decoder")
+        self.audio_tab = AudioTab(self.notebook)
+        self.notebook.add(self.audio_tab, text="Audio Decoder")
         
     def run(self):
         self.root.mainloop()

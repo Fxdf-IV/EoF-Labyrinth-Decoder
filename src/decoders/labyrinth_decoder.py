@@ -2,206 +2,192 @@
 Decodificador do labirinto
 """
 
+import os
+
 class LabyrinthDecoder:
     def __init__(self):
-        self.items = {
-            "Crânio de Corvo": {
-                "path": "Labyrinthus/Krev/Strach/Strach/Strach",
+        self.items = [
+            {
+                "name": "Crânio de Corvo",
+                "path_suffix": "Krev/Strach/Strach/Strach",
                 "sequence": "Este caminho contém uma sequência importante. Relacionado a sangue. Envolve medo.",
                 "files": "Cornix",
-                "hint": "Percorra o labirinto",
-                "tech_hint": "Observe os sigilos e as inscrições que os cercam. A sequência repetitiva pode conter a chave para decifrar o significado central. Leia cuidadosamente os detalhes destacados. USE O ALFABETO"
+                "computer_hint": "Percorra o labirinto",
+                "technical_hint": "Observe os sigilos e as inscrições que os cercam. A sequência repetitiva pode conter a chave para decifrar o significado central. Leia cuidadosamente os detalhes destacados. USE O ALFABETO"
             },
-            "Monóculo Quebrado": {
-                "path": "Labyrinthus/Smrt/Krev/Znalost/Znalost",
+            {
+                "name": "Monóculo Quebrado",
+                "path_suffix": "Smrt/Krev/Znalost/Znalost",
                 "sequence": "Este caminho contém uma sequência importante. Relacionado a sangue. Tem conexão com morte. Requer conhecimento.",
                 "files": "Newton, Visio",
-                "hint": "7 elas são",
-                "tech_hint": "Os valores hexadecimais correspondem a algo visível em uma sequência específica. Analise as cores e relacione-as com os padrões exibidos."
+                "computer_hint": "7 elas são",
+                "technical_hint": "Os valores hexadecimais correspondem a algo visível em uma sequência específica. Analise as cores e relacione-as com os padrões exibidos."
             },
-            "Garrafa Aqua Amassada": {
-                "path": "Labyrinthus/Energie/Strach/Krev",
+            {
+                "name": "Garrafa Aqua Amassada",
+                "path_suffix": "Energie/Strach/Krev/Znalost",
                 "sequence": "Este caminho contém uma sequência importante. Relacionado a energia e medo.",
                 "files": "Aqua",
-                "hint": "Siga o fluxo da água",
-                "tech_hint": "Examine os padrões de fluxo e as marcações nas paredes. A direção e intensidade podem indicar um caminho específico."
+                "computer_hint": "Siga o fluxo da água",
+                "technical_hint": "Examine os padrões de fluxo e as marcações nas paredes. A direção e intensidade podem indicar um caminho específico."
             },
-            "Disco DEMO": {
-                "path": "Labyrinthus/Znalost/Energie/Smrt",
+            {
+                "name": "Disco DEMO",
+                "path_suffix": "Znalost/Energie/Smrt/Krev",
                 "sequence": "Conhecimento leva à energia e morte.",
                 "files": "Demo_disc",
-                "hint": "A música guia o caminho",
-                "tech_hint": "As frequências sonoras podem revelar padrões ocultos. Preste atenção às variações rítmicas."
+                "computer_hint": "A música guia o caminho",
+                "technical_hint": "As frequências sonoras podem revelar padrões ocultos. Preste atenção às variações rítmicas."
             },
-            "Pote de Vidro com Algo Suspeito Dentro": {
-                "path": "Labyrinthus/Strach/Krev/Energie",
+            {
+                "name": "Pote de Vidro com Algo Suspeito Dentro",
+                "path_suffix": "Strach/Krev/Energie/Smrt",
                 "sequence": "Medo se transforma em sangue e energia.",
                 "files": "Jar_content",
-                "hint": "O conteúdo revela segredos",
-                "tech_hint": "Analise a composição e as reações químicas. Os elementos podem formar um padrão significativo."
+                "computer_hint": "O conteúdo revela segredos",
+                "technical_hint": "Analise a composição e as reações químicas. Os elementos podem formar um padrão significativo."
             },
-            "Bola Mágica 8": {
-                "path": "Labyrinthus/Znalost/Smrt/Strach",
+            {
+                "name": "Bola Mágica 8",
+                "path_suffix": "Znalost/Smrt/Strach/Krev",
                 "sequence": "Conhecimento da morte traz medo.",
                 "files": "Magic_8",
-                "hint": "A resposta está nas estrelas",
-                "tech_hint": "Os padrões astrológicos e números podem conter mensagens codificadas."
+                "computer_hint": "A resposta está nas estrelas",
+                "technical_hint": "Os padrões astrológicos e números podem conter mensagens codificadas."
             },
-            "Vaquinha": {
-                "path": "Labyrinthus/Krev/Energie/Znalost",
+            {
+                "name": "Vaquinha",
+                "path_suffix": "Krev/Energie/Znalost/Smrt",
                 "sequence": "Sangue alimenta energia e conhecimento.",
                 "files": "Cow",
-                "hint": "Siga os rastros",
-                "tech_hint": "As pegadas e marcas no chão formam um padrão específico. Observe a direção e profundidade."
+                "computer_hint": "Siga os rastros",
+                "technical_hint": "As pegadas e marcas no chão formam um padrão específico. Observe a direção e profundidade."
             },
-            "Brinquedo Cachorro-bola": {
-                "path": "Labyrinthus/Strach/Smrt/Krev",
+            {
+                "name": "Brinquedo Cachorro-bola",
+                "path_suffix": "Strach/Smrt/Krev/Energie",
                 "sequence": "Medo da morte leva ao sangue.",
                 "files": "Dog_ball",
-                "hint": "Brinque com as sombras",
-                "tech_hint": "As sombras projetadas podem revelar símbolos ocultos. Observe em diferentes ângulos."
+                "computer_hint": "Brinque com as sombras",
+                "technical_hint": "As sombras projetadas podem revelar símbolos ocultos. Observe em diferentes ângulos."
             },
-            "Filtro dos Sonhos": {
-                "path": "Labyrinthus/Energie/Znalost/Strach",
+            {
+                "name": "Filtro dos Sonhos",
+                "path_suffix": "Energie/Znalost/Strach/Krev",
                 "sequence": "Energia do conhecimento gera medo.",
                 "files": "Dreamcatcher",
-                "hint": "Os sonhos mostram o caminho",
-                "tech_hint": "Os padrões da teia contêm uma sequência específica. Analise a geometria e símbolos."
+                "computer_hint": "Os sonhos mostram o caminho",
+                "technical_hint": "Os padrões da teia contêm uma sequência específica. Analise a geometria e símbolos."
             },
-            "Boné de Sapo": {
-                "path": "Labyrinthus/Smrt/Strach/Energie",
+            {
+                "name": "Boné de Sapo",
+                "path_suffix": "Smrt/Strach/Energie/Krev",
                 "sequence": "Morte e medo geram energia.",
                 "files": "Frog_cap",
-                "hint": "Pule entre os portais",
-                "tech_hint": "A sequência de saltos forma um padrão. Observe os pontos de aterrissagem."
+                "computer_hint": "Pule entre os portais",
+                "technical_hint": "A sequência de saltos forma um padrão. Observe os pontos de aterrissagem."
             },
-            "Relógio de Gatinho": {
-                "path": "Labyrinthus/Znalost/Krev/Smrt",
+            {
+                "name": "Relógio de Gatinho",
+                "path_suffix": "Znalost/Krev/Smrt/Energie",
                 "sequence": "Conhecimento do sangue leva à morte.",
                 "files": "Cat_clock",
-                "hint": "O tempo não para",
-                "tech_hint": "Os números e posições dos ponteiros formam uma sequência. Analise os intervalos."
+                "computer_hint": "O tempo não para",
+                "technical_hint": "Os números e posições dos ponteiros formam uma sequência. Analise os intervalos."
             },
-            "Mantega": {
-                "path": "Labyrinthus/Krev/Smrt/Energie",
+            {
+                "name": "Mantega",
+                "path_suffix": "Krev/Smrt/Energie/Znalost",
                 "sequence": "Sangue da morte gera energia.",
                 "files": "Butter",
-                "hint": "Derreta os símbolos",
-                "tech_hint": "O padrão de derretimento revela mensagens ocultas. Observe a ordem e direção."
+                "computer_hint": "Derreta os símbolos",
+                "technical_hint": "O padrão de derretimento revela mensagens ocultas. Observe a ordem e direção."
             },
-            "Moeda": {
-                "path": "Labyrinthus/Energie/Krev/Znalost",
+            {
+                "name": "Moeda",
+                "path_suffix": "Energie/Krev/Znalost/Smrt",
                 "sequence": "Energia do sangue traz conhecimento.",
                 "files": "Coin",
-                "hint": "Duas faces da verdade",
-                "tech_hint": "As inscrições em ambos os lados formam um código. Compare e combine os símbolos."
+                "computer_hint": "Duas faces da verdade",
+                "technical_hint": "As inscrições em ambos os lados formam um código. Compare e combine os símbolos."
             },
-            "Baú": {
-                "path": "Labyrinthus/Strach/Znalost/Smrt",
+            {
+                "name": "Baú",
+                "path_suffix": "Strach/Znalost/Smrt/Krev",
                 "sequence": "Medo do conhecimento leva à morte.",
                 "files": "Chest",
-                "hint": "O tesouro está protegido",
-                "tech_hint": "A sequência de travas forma um padrão específico. Analise a ordem de desbloqueio."
+                "computer_hint": "O tesouro está protegido",
+                "technical_hint": "A sequência de travas forma um padrão específico. Analise a ordem de desbloqueio."
             },
-            "Miniatura de Fusca Azul": {
-                "path": "Labyrinthus/Smrt/Energie/Krev",
+            {
+                "name": "Miniatura de Fusca Azul",
+                "path_suffix": "Smrt/Energie/Krev/Znalost",
                 "sequence": "Morte energizada pelo sangue.",
                 "files": "Blue_beetle",
-                "hint": "Siga as rodas",
-                "tech_hint": "As marcas das rodas formam um caminho específico. Observe a profundidade e direção."
+                "computer_hint": "Siga as rodas",
+                "technical_hint": "As marcas das rodas formam um caminho específico. Observe a profundidade e direção."
             },
-            "PenDrive Amassado": {
-                "path": "Labyrinthus/Znalost/Strach/Krev",
+            {
+                "name": "PenDrive Amassado",
+                "path_suffix": "Znalost/Strach/Krev/Energie",
                 "sequence": "Conhecimento do medo leva ao sangue.",
                 "files": "Pendrive",
-                "hint": "Os dados não mentem",
-                "tech_hint": "Os arquivos corrompidos contêm padrões. Analise os bytes e sequências binárias."
+                "computer_hint": "Os dados não mentem",
+                "technical_hint": "Os arquivos corrompidos contêm padrões. Analise os bytes e sequências binárias."
             },
-            "Anel de Corvo": {
-                "path": "Labyrinthus/Krev/Znalost/Energie",
+            {
+                "name": "Anel de Corvo",
+                "path_suffix": "Krev/Znalost/Energie/Smrt",
                 "sequence": "Sangue do conhecimento gera energia.",
                 "files": "Crow_ring",
-                "hint": "O círculo se fecha",
-                "tech_hint": "As inscrições no anel formam uma sequência circular. Observe o ponto de início."
+                "computer_hint": "O círculo se fecha",
+                "technical_hint": "As inscrições no anel formam uma sequência circular. Observe o ponto de início."
             },
-            "Bracelete Dourado": {
-                "path": "Labyrinthus/Energie/Smrt/Strach",
+            {
+                "name": "Bracelete Dourado",
+                "path_suffix": "Energie/Smrt/Strach/Krev",
                 "sequence": "Energia da morte traz medo.",
                 "files": "Golden_bracelet",
-                "hint": "O brilho guia",
-                "tech_hint": "Os padrões de reflexão formam símbolos específicos. Analise em diferentes intensidades de luz."
+                "computer_hint": "O brilho guia",
+                "technical_hint": "Os padrões de reflexão formam símbolos específicos. Analise em diferentes intensidades de luz."
             },
-            "Chave do Labirinto": {
-                "path": "Labyrinthus/Strach/Energie/Znalost",
+            {
+                "name": "Chave do Labirinto",
+                "path_suffix": "Strach/Energie/Znalost/Smrt",
                 "sequence": "Medo da energia traz conhecimento.",
                 "files": "Maze_key",
-                "hint": "A chave final",
-                "tech_hint": "As ranhuras da chave formam um código específico. Compare com os padrões das fechaduras."
+                "computer_hint": "A chave final",
+                "technical_hint": "As ranhuras da chave formam um código específico. Compare com os padrões das fechaduras."
             },
-            "Grimório": {
-                "path": "Labyrinthus/Znalost/Krev/Strach",
+            {
+                "name": "Grimório",
+                "path_suffix": "Znalost/Krev/Strach/Smrt",
                 "sequence": "Conhecimento do sangue traz medo.",
                 "files": "Grimoire",
-                "hint": "As páginas sussurram",
-                "tech_hint": "As páginas contêm padrões ocultos. Analise a ordem e símbolos em cada página."
+                "computer_hint": "As páginas sussurram",
+                "technical_hint": "As páginas contêm padrões ocultos. Analise a ordem e símbolos em cada página."
             }
-        }
-
-        # Lista ordenada dos itens
-        self.ordered_items = [
-            "Crânio de Corvo",
-            "Monóculo Quebrado",
-            "Garrafa Aqua Amassada",
-            "Disco DEMO",
-            "Pote de Vidro com Algo Suspeito Dentro",
-            "Bola Mágica 8",
-            "Vaquinha",
-            "Brinquedo Cachorro-bola",
-            "Filtro dos Sonhos",
-            "Boné de Sapo",
-            "Relógio de Gatinho",
-            "Mantega",
-            "Moeda",
-            "Baú",
-            "Miniatura de Fusca Azul",
-            "PenDrive Amassado",
-            "Anel de Corvo",
-            "Bracelete Dourado",
-            "Chave do Labirinto",
-            "Grimório"
         ]
 
-    def decode_path(self, path):
-        """Decodifica um caminho do labirinto"""
+    def decode_labyrinth(self, base_path):
+        """Decodifica o labirinto a partir do caminho base fornecido"""
         results = []
         
-        # Se não houver caminho, retorna todos os itens na ordem
-        if not path:
-            items_to_process = self.ordered_items
-        else:
-            # Se houver caminho, filtra os itens que contêm o caminho
-            items_to_process = [
-                item for item in self.ordered_items 
-                if path.lower() in self.items[item]["path"].lower()
-            ]
+        for item in self.items:
+            # Constrói o caminho completo usando apenas barras /
+            full_path = os.path.join(base_path, item["path_suffix"]).replace("\\", "/")
+            
+            # Cria uma cópia do item e adiciona o caminho completo
+            result = item.copy()
+            result["path"] = full_path
+            
+            results.append({
+                "name": result["name"],
+                "path": result["path"],
+                "sequence": result["sequence"],
+                "files": result["files"],
+                "computer_hint": result["computer_hint"],
+                "technical_hint": result["technical_hint"]
+            })
         
-        # Processa os itens mantendo a ordem
-        for i, item_name in enumerate(items_to_process, 1):
-            item_data = self.items[item_name]
-            result = f"""
-Item {i}: {item_name}
-
-Caminho: {item_data['path']}
-Sequência: {item_data['sequence']}
-Arquivos: {item_data['files']}
-
-Dica exibida no computador: "{item_data['hint']}"
-
-Dica Técnica:
-{item_data['tech_hint']}
-
---------------------------------------------------
-"""
-            results.append(result)
-        
-        return "".join(results) if results else "Nenhum item encontrado para este caminho."
+        return results
