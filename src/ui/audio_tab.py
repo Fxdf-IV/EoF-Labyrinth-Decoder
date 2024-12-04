@@ -11,7 +11,19 @@ from src.decoders.audio_decoder import AudioDecoder
 class AudioDecoderTab(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
+        self.parent = parent
         self.decoder = AudioDecoder()
+        
+        # Configurar estilo global das scrollbars
+        style = ttk.Style()
+        style.configure("Custom.Vertical.TScrollbar",
+                      background="black",
+                      troughcolor="black",
+                      arrowcolor="#00ff00")
+        style.map("Custom.Vertical.TScrollbar",
+                 background=[('active', '#003300')],
+                 arrowcolor=[('active', '#00ff00')])
+        
         self.setup_ui()
         
     def setup_ui(self):
@@ -42,19 +54,26 @@ class AudioDecoderTab(ttk.Frame):
         self.audio_frame.pack(pady=5, padx=10, fill=tk.BOTH, expand=True)
         
         # Área de resultados
-        self.result_text = tk.Text(self,
-            height=20,
-            bg=UI_CONFIG['theme']['text_bg'],
-            fg=UI_CONFIG['theme']['text_fg'],
-            insertbackground=UI_CONFIG['theme']['text_fg'])
-        self.result_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        text_frame = ttk.Frame(self)
+        text_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
         
-        # Scrollbar para resultados
-        scrollbar = ttk.Scrollbar(self.result_text,
-            orient="vertical",
-            command=self.result_text.yview)
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(text_frame, style="Custom.Vertical.TScrollbar")
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.result_text.configure(yscrollcommand=scrollbar.set)
+        
+        # Área de texto para resultados
+        self.result_text = tk.Text(text_frame,
+            yscrollcommand=scrollbar.set,
+            wrap=tk.WORD,
+            background='black',
+            foreground='#00ff00',
+            insertbackground='#00ff00',
+            selectbackground='#003300',
+            selectforeground='#00ff00',
+            height=20)
+        self.result_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        scrollbar.config(command=self.result_text.yview)
         
     def load_audio(self):
         """Carrega e analisa um arquivo de áudio"""

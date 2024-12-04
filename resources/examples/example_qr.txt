@@ -1,0 +1,1 @@
+Esta é uma imagem de exemplo contendo um QR code para testar o decodificador.
