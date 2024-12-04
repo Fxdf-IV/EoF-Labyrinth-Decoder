@@ -4,8 +4,9 @@ Aba do decodificador do labirinto
 
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from ..decoders.labyrinth_decoder import LabyrinthDecoder
+from PIL import Image, ImageTk
 import os
+from ..decoders.labyrinth_decoder import LabyrinthDecoder
 
 class LabyrinthTab(ttk.Frame):
     def __init__(self, parent):
@@ -125,13 +126,53 @@ INSTRUÇÕES DE USO:
         text = ""
         for i, result in enumerate(results, 1):
             text += f"\nItem {i}: {result['name']}\n\n"
-            text += f"Caminho: {result['path']}\n"
+            
+            # Se for o D20, tenta mostrar a imagem no caminho
+            if result['name'] == "D20":
+                if result.get('image_path'):
+                    try:
+                        # Insere o início do texto
+                        self.result_text.insert(tk.END, text + "Caminho: ")
+                        text = ""  # Limpa o texto para continuar depois
+                        
+                        # Carrega e redimensiona a imagem mantendo a proporção
+                        image = Image.open(result['image_path'])
+                        # Pega as dimensões originais
+                        width, height = image.size
+                        # Calcula a proporção
+                        aspect_ratio = width / height
+                        # Define a altura desejada
+                        target_height = 50  # pixels
+                        # Calcula a largura proporcional
+                        target_width = int(target_height * aspect_ratio)
+                        # Redimensiona mantendo a proporção
+                        image = image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+                        
+                        # Converte a imagem para PhotoImage
+                        photo = ImageTk.PhotoImage(image)
+                        
+                        # Guarda referência da imagem para não ser coletada pelo garbage collector
+                        if not hasattr(self, 'images'):
+                            self.images = []
+                        self.images.append(photo)
+                        
+                        # Insere a imagem
+                        self.result_text.image_create(tk.END, image=photo)
+                        text += "\n"  # Quebra de linha após a imagem
+                    except Exception as e:
+                        text += f"Caminho: Erro ao carregar imagem: {str(e)}\n"
+                else:
+                    text += f"Caminho: {result['path']}\n"
+            else:
+                text += f"Caminho: {result['path']}\n"
+            
             text += f"Sequência: {result['sequence']}\n"
             text += f"Arquivos: {result['files']}\n\n"
             text += f"Dica exibida no computador: {result['computer_hint']}\n\n"
             text += "Dica Técnica:\n"
             text += f"{result['technical_hint']}\n"
             text += "\n" + "="*80 + "\n"  # Separador
+            
         return text
 
     def select_folder(self):
@@ -161,11 +202,66 @@ INSTRUÇÕES DE USO:
         
         try:
             # Decodifica o labirinto
-            results = self.decoder.decode_labyrinth(self.selected_path)
+            self.results = self.decoder.decode_labyrinth(self.selected_path)
             
-            # Formata e mostra os resultados
-            formatted_text = self.format_result(results)
-            self.result_text.insert(tk.END, formatted_text)
+            # Inicia a animação de digitação
+            self.current_item = 0
+            self.current_char = 0
+            self.type_next_character()
             
         except Exception as e:
             self.result_text.insert(tk.END, f"Erro ao decodificar o labirinto: {str(e)}")
+
+    def type_next_character(self):
+        """Digita o próximo caractere com efeito de digitação"""
+        if self.current_item >= len(self.results):
+            return
+            
+        result = self.results[self.current_item]
+        
+        # Formata o texto do item atual
+        if self.current_char == 0:
+            self.current_text = f"\nItem {self.current_item + 1}: {result['name']}\n\n"
+            if result['name'] == "D20":
+                self.current_text += "Caminho: "
+                # Após inserir o texto inicial, insere a imagem
+                self.result_text.insert(tk.END, self.current_text)
+                self.current_text = ""
+                try:
+                    # Carrega e redimensiona a imagem mantendo a proporção
+                    image = Image.open(result['image_path'])
+                    width, height = image.size
+                    aspect_ratio = width / height
+                    target_height = 50
+                    target_width = int(target_height * aspect_ratio)
+                    image = image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+                    photo = ImageTk.PhotoImage(image)
+                    if not hasattr(self, 'images'):
+                        self.images = []
+                    self.images.append(photo)
+                    self.result_text.image_create(tk.END, image=photo)
+                    self.current_text = "\n"
+                except Exception as e:
+                    self.current_text += f"Erro ao carregar imagem: {str(e)}\n"
+            else:
+                self.current_text += f"Caminho: {result['path']}\n"
+            self.current_text += f"Sequência: {result['sequence']}\n"
+            self.current_text += f"Arquivos: {result['files']}\n\n"
+            self.current_text += f"Dica exibida no computador: {result['computer_hint']}\n\n"
+            self.current_text += "Dica Técnica:\n"
+            self.current_text += f"{result['technical_hint']}\n"
+            self.current_text += "\n" + "="*80 + "\n"
+        
+        # Insere o próximo caractere
+        if self.current_char < len(self.current_text):
+            self.result_text.insert(tk.END, self.current_text[self.current_char])
+            self.current_char += 1
+            self.result_text.see(tk.END)  # Rola automaticamente para o final
+            # Velocidade de digitação - 5x mais rápido (2ms entre caracteres)
+            self.after(2, self.type_next_character)
+        else:
+            # Passa para o próximo item
+            self.current_item += 1
+            self.current_char = 0
+            if self.current_item < len(self.results):
+                self.after(10, self.type_next_character)  # Pausa entre itens também 5x mais rápida
