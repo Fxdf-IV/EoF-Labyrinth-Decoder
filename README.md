@@ -1,82 +1,132 @@
-# EoF Labyrinth Decoder
+# EoF Enigma Decoder
 
-Esta é uma ferramenta especialmente desenvolvida para o jogo [Enigma of Fear (Enigma do Medo)](https://store.steampowered.com/app/1779190/Enigma_of_Fear/) disponível na Steam.
+Um decodificador multi-modal para o jogo Enigma of Fear, capaz de processar e decodificar diversos tipos de puzzles e mensagens ocultas.
 
-## Sobre o Jogo
+## Características
 
-Enigma of Fear é um jogo de terror psicológico em primeira pessoa que mistura elementos de puzzle e exploração. Na história do Samuel, você precisa desvendar a criptografia dos itens explorando o labirinto de pastas do jogo.
+- Interface gráfica com tema Matrix
+- Suporte para múltiplos tipos de decodificação:
+  - Labirinto
+  - Imagem
+  - Texto
+  - Áudio
+- Análise avançada de padrões
+- Sistema de logging detalhado
+- Testes unitários abrangentes
 
-## Sobre esta Ferramenta
+## Decodificadores
 
-Pensei como o Samuel resolveria esse problema, e então decidi agir como ele, desenvolvendo este script. O EoF Labyrinth Decoder é uma ferramenta que ajuda a explorar todos os caminhos possíveis dentro do labirinto do jogo, localizando arquivos importantes e excluindo caminhos que levam a sustos ("uh-oh"). 
+### Labirinto
+- Exploração automática de caminhos
+- Validação de sequências de palavras-chave
+- Mapeamento de caminhos conhecidos do jogo
 
-### Características:
-- Interface gráfica intuitiva
-- Exploração automática de todos os caminhos possíveis
-- Exclusão de caminhos que levam a sustos
-- Barra de progresso em tempo real
-- Exibição clara dos caminhos encontrados
+### Imagem
+- Detecção de QR codes e códigos de barras
+- OCR para texto em imagens
+- Análise de padrões visuais
+- Detecção de sigilos e símbolos
+- Análise de cores e padrões
 
-## Instalação e Uso
+### Texto
+- Decodificação automática de:
+  - Base64
+  - Hexadecimal
+  - Binário
+  - Código Morse
+  - Cifra de César
+  - Cifra Atbash
+  - Cifra de Vigenère
+- Análise de padrões de texto
+- Detecção de sequências repetidas
 
-### Para Usuários
-1. Na página do projeto no GitHub:
-   - Clique na seção "Releases" no lado direito
-   - Ou [clique aqui](../../releases) para ir direto
-2. Em "Assets" da release mais recente:
-   - Clique em `EoFLabyrinthDecoder.exe` para baixar
-3. Depois de baixar:
-   - Não precisa instalar
-   - Você pode mover o arquivo para qualquer pasta
-   - Basta dar duplo clique para executar
-4. Na primeira execução:
-   - O Windows vai mostrar um aviso de segurança
-   - É normal, pois o programa não tem certificado digital
-   - Clique em "Mais informações"
-   - Depois clique em "Executar assim mesmo"
-   OBS: Juro que não estou te hackeando!
-
-### Como Usar o Programa
-1. Com o programa aberto:
-   - Clique no botão "Procurar"
-   - Navegue até a pasta do jogo Enigma of Fear
-   - Selecione a pasta "Labyrinthus"
-      - Geralmente em: `C:\Program Files (x86)\Steam\steamapps\common\Enigma of Fear\Labyrinthus`
-2. Clique em "Iniciar Exploração"
-3. Aguarde a análise completar:
-   - A barra de progresso mostrará o andamento
-   - Os caminhos seguros aparecerão na área de texto
-   - Caminhos com "uh-oh" são automaticamente ignorados
-
-### Para Desenvolvedores
-Se você quer executar o código fonte:
-
-1. Clone este repositório:
-```bash
-git clone https://github.com/Fxdf-IV/EoF-Labyrinth-Decoder.git
-```
-
-2. Instale as dependências:
-```bash
-pip install -r requirements.txt
-```
-
-3. Execute o programa:
-```bash
-python maze_solver.py
-```
+### Áudio
+- Detecção de código Morse em áudio
+- Análise de tons DTMF
+- Análise espectral
+- Detecção de mensagens ocultas
+- Análise de estrutura musical
 
 ## Requisitos
-- Windows 7 ou superior
-- [Enigma of Fear](https://store.steampowered.com/app/1779190/Enigma_of_Fear/) instalado
 
-## Problemas Conhecidos
-Se você encontrar algum problema, por favor entre em contato com o usuário Fxdf#2179 no Discord.
+```
+numpy>=1.21.0
+pillow>=8.3.0
+opencv-python>=4.5.0
+matplotlib>=3.4.0
+morse-translator>=1.1.0
+pyzbar>=0.1.8
+pydub>=0.25.1
+scipy>=1.7.0
+scikit-image>=0.18.0
+python-dotenv>=0.19.0
+qrcode>=7.3.0
+python-barcode>=0.13.1
+pytesseract>=0.3.8
+librosa>=0.8.1
+cryptography>=41.0.0
+pyttsx3>=2.90
+braille-translator>=0.1.0
+```
+
+## Instalação
+
+1. Clone o repositório
+2. Instale as dependências:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Execute o programa:
+   ```
+   python src/main.py
+   ```
+
+## Testes
+
+Execute os testes unitários:
+```
+python -m unittest tests/test_decoders.py
+```
+
+## Estrutura do Projeto
+
+```
+EoF Labyrinth Decoder/
+├── src/
+│   ├── ui/
+│   │   ├── main_window.py
+│   │   └── dialogs/
+│   ├── decoders/
+│   │   ├── labyrinth_decoder.py
+│   │   ├── image_decoder.py
+│   │   ├── text_decoder.py
+│   │   └── audio_decoder.py
+│   └── main.py
+├── tests/
+│   └── test_decoders.py
+├── resources/
+│   └── known_patterns/
+├── logs/
+├── requirements.txt
+└── README.md
+```
+
+## Uso
+
+1. Inicie o programa
+2. Selecione a aba apropriada para o tipo de puzzle
+3. Carregue o arquivo ou insira o texto/padrão
+4. Use as ferramentas de análise e decodificação
+5. Verifique os resultados e logs
 
 ## Contribuindo
-Contribuições são bem-vindas! Se você tem uma sugestão de melhoria:
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
+
+1. Fork o projeto
+2. Crie sua branch de feature
+3. Commit suas mudanças
+4. Push para a branch
 5. Abra um Pull Request
+
+## Licença
+
+Este projeto está licenciado sob a MIT License - veja o arquivo LICENSE para detalhes.

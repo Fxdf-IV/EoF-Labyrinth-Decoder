@@ -10,11 +10,11 @@ import os
 
 # Configuração do executável
 PyInstaller.__main__.run([
-    'maze_solver.py',
-    '--name=EoFLabyrinthDecoder',
+    'src/main.py',
     '--onefile',
     '--windowed',
-    '--clean',
-    '--add-data=README.md;.',
-    f'--icon={os.path.join(os.getcwd(), "icon.ico")}' if os.path.exists('icon.ico') else '',
+    '--icon=icon.ico',
+    '--name=EoFEnigmaDecoder',
+    '--add-data=resources;resources',
+    '--hidden-import=PIL._tkinter_finder'
 ])
