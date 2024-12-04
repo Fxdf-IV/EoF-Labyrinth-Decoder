@@ -13,6 +13,17 @@ class IntroTab(ttk.Frame):
         super().__init__(parent)
         # Obtém o caminho base do projeto
         self.base_path = Path(__file__).parent.parent.parent
+        
+        # Configurar estilo global das scrollbars
+        style = ttk.Style()
+        style.configure("Custom.Vertical.TScrollbar",
+                      background="black",
+                      troughcolor="black",
+                      arrowcolor="#00ff00")
+        style.map("Custom.Vertical.TScrollbar",
+                 background=[('active', '#003300')],
+                 arrowcolor=[('active', '#00ff00')])
+        
         self.setup_ui()
         
     def setup_ui(self):
@@ -25,7 +36,7 @@ class IntroTab(ttk.Frame):
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
         # Scrollbar
-        scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=self.canvas.yview)
+        scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=self.canvas.yview, style="Custom.Vertical.TScrollbar")
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
         # Configura o canvas
@@ -34,6 +45,17 @@ class IntroTab(ttk.Frame):
         # Frame interno para o conteúdo
         self.inner_frame = ttk.Frame(self.canvas)
         self.canvas_frame = self.canvas.create_window((0, 0), window=self.inner_frame, anchor="nw")
+        
+        # Bind do mousewheel diretamente no canvas e no frame principal
+        def _on_mousewheel(event):
+            self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            
+        main_frame.bind("<MouseWheel>", _on_mousewheel)
+        self.canvas.bind("<MouseWheel>", _on_mousewheel)
+        self.inner_frame.bind("<MouseWheel>", _on_mousewheel)
+        
+        # Atualiza a região de scroll quando o conteúdo muda
+        self.inner_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         
         # Título
         title = ttk.Label(self.inner_frame, 
@@ -126,23 +148,3 @@ class IntroTab(ttk.Frame):
                 text=f"Erro ao carregar imagem do alfabeto: {str(e)}",
                 foreground='red')
             error_label.pack(pady=5)
-
-        # Configurações de scroll
-        self.inner_frame.bind('<Configure>', self._configure_scroll_region)
-        self.canvas.bind('<Configure>', self._configure_canvas)
-        
-        # Bind do mousewheel
-        self.bind_all("<MouseWheel>", self._on_mousewheel)
-        
-    def _configure_scroll_region(self, event):
-        """Configura a região de scroll do canvas"""
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        
-    def _configure_canvas(self, event):
-        """Ajusta o tamanho do frame interno ao redimensionar"""
-        width = event.width - 4  # 4 pixels para margem
-        self.canvas.itemconfig(self.canvas_frame, width=width)
-        
-    def _on_mousewheel(self, event):
-        """Função para scroll do mouse"""
-        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
