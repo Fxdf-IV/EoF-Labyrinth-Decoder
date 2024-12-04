@@ -25,7 +25,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Garrafa Aqua Amassada",
-                "path_suffix": "Energie/Strach/Krev/Znalost",
+                "path_suffix": "Strach/Krev/Krev/Smrt",
                 "sequence": "Este caminho contém uma sequência importante. Relacionado a energia e medo.",
                 "files": "Aqua",
                 "computer_hint": "Siga o fluxo da água",
@@ -33,7 +33,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Disco DEMO",
-                "path_suffix": "Znalost/Energie/Smrt/Krev",
+                "path_suffix": "Smrt/Energie/Energie/Energie",
                 "sequence": "Conhecimento leva à energia e morte.",
                 "files": "Demo_disc",
                 "computer_hint": "A música guia o caminho",
@@ -41,7 +41,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Pote de Vidro com Algo Suspeito Dentro",
-                "path_suffix": "Strach/Krev/Energie/Smrt",
+                "path_suffix": "Znalost/Energie/Energie/Znalost",
                 "sequence": "Medo se transforma em sangue e energia.",
                 "files": "Jar_content",
                 "computer_hint": "O conteúdo revela segredos",
@@ -49,7 +49,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Bola Mágica 8",
-                "path_suffix": "Znalost/Smrt/Strach/Krev",
+                "path_suffix": "Krev/Znalost/Krev/Krev",
                 "sequence": "Conhecimento da morte traz medo.",
                 "files": "Magic_8",
                 "computer_hint": "A resposta está nas estrelas",
@@ -57,7 +57,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Vaquinha",
-                "path_suffix": "Krev/Energie/Znalost/Smrt",
+                "path_suffix": "Znalost/Strach/Smrt/Smrt",
                 "sequence": "Sangue alimenta energia e conhecimento.",
                 "files": "Cow",
                 "computer_hint": "Siga os rastros",
@@ -65,7 +65,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Brinquedo Cachorro-bola",
-                "path_suffix": "Strach/Smrt/Krev/Energie",
+                "path_suffix": "Energie/Znalost/Smrt/Krev",
                 "sequence": "Medo da morte leva ao sangue.",
                 "files": "Dog_ball",
                 "computer_hint": "Brinque com as sombras",
@@ -73,7 +73,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Filtro dos Sonhos",
-                "path_suffix": "Energie/Znalost/Strach/Krev",
+                "path_suffix": "Krev/Smrt/Energie/Energie",
                 "sequence": "Energia do conhecimento gera medo.",
                 "files": "Dreamcatcher",
                 "computer_hint": "Os sonhos mostram o caminho",
@@ -81,7 +81,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Boné de Sapo",
-                "path_suffix": "Smrt/Strach/Energie/Krev",
+                "path_suffix": "Znalost/Strach/Strach/Krev",
                 "sequence": "Morte e medo geram energia.",
                 "files": "Frog_cap",
                 "computer_hint": "Pule entre os portais",
@@ -89,7 +89,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Relógio de Gatinho",
-                "path_suffix": "Znalost/Krev/Smrt/Energie",
+                "path_suffix": "Krev/Smrt/Strach/Smrt",
                 "sequence": "Conhecimento do sangue leva à morte.",
                 "files": "Cat_clock",
                 "computer_hint": "O tempo não para",
@@ -97,7 +97,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Mantega",
-                "path_suffix": "Krev/Smrt/Energie/Znalost",
+                "path_suffix": "Znalost/Krev/Strach/Krev",
                 "sequence": "Sangue da morte gera energia.",
                 "files": "Butter",
                 "computer_hint": "Derreta os símbolos",
@@ -105,7 +105,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Moeda",
-                "path_suffix": "Energie/Krev/Znalost/Smrt",
+                "path_suffix": "Znalost/Znalost/Energie/Smrt",
                 "sequence": "Energia do sangue traz conhecimento.",
                 "files": "Coin",
                 "computer_hint": "Duas faces da verdade",
@@ -113,7 +113,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Baú",
-                "path_suffix": "Strach/Znalost/Smrt/Krev",
+                "path_suffix": "Krev/Znalost/Smrt/Smrt",
                 "sequence": "Medo do conhecimento leva à morte.",
                 "files": "Chest",
                 "computer_hint": "O tesouro está protegido",
@@ -121,7 +121,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Miniatura de Fusca Azul",
-                "path_suffix": "Smrt/Energie/Krev/Znalost",
+                "path_suffix": "Smrt/Znalost/Smrt/Smrt",
                 "sequence": "Morte energizada pelo sangue.",
                 "files": "Blue_beetle",
                 "computer_hint": "Siga as rodas",
@@ -129,7 +129,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "PenDrive Amassado",
-                "path_suffix": "Znalost/Strach/Krev/Energie",
+                "path_suffix": "Znalost/Smrt/Energie/Strach",
                 "sequence": "Conhecimento do medo leva ao sangue.",
                 "files": "Pendrive",
                 "computer_hint": "Os dados não mentem",
@@ -137,7 +137,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Anel de Corvo",
-                "path_suffix": "Krev/Znalost/Energie/Smrt",
+                "path_suffix": "Krev/Znalost/Energie/Energie",
                 "sequence": "Sangue do conhecimento gera energia.",
                 "files": "Crow_ring",
                 "computer_hint": "O círculo se fecha",
@@ -145,7 +145,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Bracelete Dourado",
-                "path_suffix": "Energie/Smrt/Strach/Krev",
+                "path_suffix": "Smrt/Energie/Strach/Krev",
                 "sequence": "Energia da morte traz medo.",
                 "files": "Golden_bracelet",
                 "computer_hint": "O brilho guia",
@@ -153,7 +153,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Chave do Labirinto",
-                "path_suffix": "Strach/Energie/Znalost/Smrt",
+                "path_suffix": "Strach/Energie/Znalost",
                 "sequence": "Medo da energia traz conhecimento.",
                 "files": "Maze_key",
                 "computer_hint": "A chave final",
@@ -161,7 +161,7 @@ class LabyrinthDecoder:
             },
             {
                 "name": "Grimório",
-                "path_suffix": "Znalost/Krev/Strach/Smrt",
+                "path_suffix": "Znalost/Krev/Strach/Krev",
                 "sequence": "Conhecimento do sangue traz medo.",
                 "files": "Grimoire",
                 "computer_hint": "As páginas sussurram",
