@@ -12,6 +12,17 @@ class LabyrinthTab(ttk.Frame):
         super().__init__(parent)
         self.parent = parent
         self.decoder = LabyrinthDecoder()
+        
+        # Configurar estilo global das scrollbars
+        style = ttk.Style()
+        style.configure("Custom.Vertical.TScrollbar",
+                      background="black",
+                      troughcolor="black",
+                      arrowcolor="#00ff00")
+        style.map("Custom.Vertical.TScrollbar",
+                 background=[('active', '#003300')],
+                 arrowcolor=[('active', '#00ff00')])
+        
         self.setup_ui()
 
     def setup_ui(self):
@@ -82,40 +93,27 @@ INSTRUÇÕES DE USO:
         )
         self.decode_button.pack(side=tk.LEFT, padx=(10, 0))
         
-        # Área de resultados com scroll
+        # Área de resultados com scrollbar
         result_frame = ttk.Frame(main_frame)
-        result_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=(10, 20))
+        result_frame.pack(fill=tk.BOTH, expand=True, pady=(10,0))
         
         # Scrollbar
-        scrollbar = ttk.Scrollbar(result_frame)
+        scrollbar = ttk.Scrollbar(result_frame, style="Custom.Vertical.TScrollbar")
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
-        # Configurar estilo da scrollbar
-        style = ttk.Style()
-        style.configure("Custom.Vertical.TScrollbar",
-                      background="black",
-                      troughcolor="black",
-                      arrowcolor="#00ff00")
-        style.map("Custom.Vertical.TScrollbar",
-                 background=[('active', '#003300')],
-                 arrowcolor=[('active', '#00ff00')])
-        scrollbar.configure(style="Custom.Vertical.TScrollbar")
-        
-        # Text widget para resultados
-        self.result_text = tk.Text(
-            result_frame, 
+        # Área de texto para resultados
+        self.result_text = tk.Text(result_frame, 
+            yscrollcommand=scrollbar.set,
             wrap=tk.WORD,
-            bg='black',
-            fg='#00ff00',
-            font=('Consolas', 10),
-            width=80,
-            height=20
-        )
+            background='black',
+            foreground='#00ff00',
+            insertbackground='#00ff00',
+            selectbackground='#003300',
+            selectforeground='#00ff00',
+            height=20)
         self.result_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
-        # Configurar scroll
         scrollbar.config(command=self.result_text.yview)
-        self.result_text.config(yscrollcommand=scrollbar.set)
         
         # Bind do mousewheel
         def on_mousewheel(event):

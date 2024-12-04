@@ -38,13 +38,22 @@ class TextTab(ttk.Frame):
         x, y = self.winfo_pointerxy()
         target = self.winfo_containing(x, y)
         
-        # Encontra o widget Text mais próximo
-        while target and not isinstance(target, tk.Text):
-            target = target.master
-            
-        # Se encontrou um widget Text, aplica o scroll
-        if target:
+        # Se o target for o próprio canvas ou o frame das instruções
+        if target == self.instructions or target in self.instructions.winfo_children():
+            self.instructions.yview_scroll(int(-1*(event.delta/120)), "units")
+        # Para outros widgets Text
+        elif isinstance(target, tk.Text):
             target.yview_scroll(int(-1*(event.delta/120)), "units")
+        # Para widgets dentro de frames
+        else:
+            # Procura pelo widget pai até encontrar um Text ou o root
+            while target and not isinstance(target, tk.Text):
+                if hasattr(target, 'winfo_children'):
+                    for child in target.winfo_children():
+                        if isinstance(child, tk.Text):
+                            child.yview_scroll(int(-1*(event.delta/120)), "units")
+                            return
+                target = target.master
             
     def create_widgets(self):
         # Frame principal com scrollbar
@@ -102,10 +111,10 @@ class TextTab(ttk.Frame):
                           command=self.update_instructions).pack(side=tk.LEFT, padx=10)
 
         # Área de instruções com texto clicável
-        instructions_frame = ttk.Frame(self.canvas_frame)
-        instructions_frame.pack(fill=tk.BOTH, expand=True, padx=10)
+        self.instructions_frame = ttk.Frame(self.canvas_frame)
+        self.instructions_frame.pack(fill=tk.BOTH, expand=True, padx=10)
         
-        self.instructions = tk.Text(instructions_frame, 
+        self.instructions = tk.Text(self.instructions_frame, 
                                   bg='black', 
                                   fg='#00ff00',
                                   font=('Courier', 12),
@@ -116,8 +125,14 @@ class TextTab(ttk.Frame):
         self.instructions.tag_configure('clickable', foreground='#00ff00', underline=True, font=('Courier', 14, 'bold'))
         self.instructions.tag_bind('clickable', '<Button-1>', self.copy_braille)
 
+        def _on_mousewheel(event):
+            self.instructions.yview_scroll(int(-1*(event.delta/120)), "units")
+
+        # Bind do mousewheel no frame e no text widget
+        self.instructions_frame.bind_all('<MouseWheel>', _on_mousewheel)
+
         # Configurar scrollbar preta para as instruções
-        self.instructions_scrollbar = ttk.Scrollbar(instructions_frame, orient=tk.VERTICAL, command=self.instructions.yview)
+        self.instructions_scrollbar = ttk.Scrollbar(self.instructions_frame, orient=tk.VERTICAL, command=self.instructions.yview)
         self.instructions_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.instructions.configure(yscrollcommand=self.instructions_scrollbar.set)
         self.instructions_scrollbar.configure(style="Custom.Vertical.TScrollbar")
@@ -299,7 +314,7 @@ Dica: O texto em Base64 geralmente termina com = ou =="""
 2. Separe as letras com espaço e as palavras com /
 3. Clique em "Decodificar"
 
-Exemplo: .... . .-.. .-.. --- / .-- --- .-. .-.. -.. (decodifica para "HELLO WORLD")
+Exemplo: .... . .-.. .-.. --- / .-- --- .-. .-.. -.. (decodifica para "HELLOWORLD")
 
 ALFABETO MORSE:
 A = .-      B = -...    C = -.-.    D = -..     E = .
