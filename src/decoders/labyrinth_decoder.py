@@ -161,11 +161,12 @@ class LabyrinthDecoder:
             },
             {
                 "name": "D20",
-                "path_suffix": "resources/images/SIGILO D20.jpg",
-                "sequence": "O caminho é a resposta",
+                "path_suffix": "Znalost/Krev/Strach/Krev",
+                "sequence": "Conhecimento, Sangue, Medo, Sangue",
                 "files": "D20",
                 "computer_hint": "Menu.",
-                "technical_hint": "O caminho é a resposta"
+                "technical_hint": "O caminho é a resposta",
+                "image_path": os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "resources", "images", "sigilo_d20.jpg")
             }
         ]
 
@@ -181,13 +182,18 @@ class LabyrinthDecoder:
             result = item.copy()
             result["path"] = full_path
             
+            # Se o item tem uma imagem, adiciona o caminho da imagem
+            if "image_path" in item:
+                result["image_path"] = item["image_path"]
+            
             results.append({
                 "name": result["name"],
                 "path": result["path"],
                 "sequence": result["sequence"],
                 "files": result["files"],
                 "computer_hint": result["computer_hint"],
-                "technical_hint": result["technical_hint"]
+                "technical_hint": result["technical_hint"],
+                "image_path": result.get("image_path", None)
             })
         
         return results
