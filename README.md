@@ -57,6 +57,14 @@ Um decodificador multi-modal para o jogo Enigma of Fear, capaz de processar e de
 - Python 3.13+
 - Bibliotecas: tkinter, pygame, matplotlib, soundfile, numpy, scipy, Pillow
 
+## Download e Uso
+
+1. Acesse a página de releases do repositório no GitHub.
+2. Baixe o arquivo executável mais recente para o seu sistema operacional.
+3. Execute o arquivo baixado para iniciar o aplicativo.
+
+O aplicativo é auto-contido e não requer instalação adicional de dependências. Basta executar o arquivo e usar as funcionalidades disponíveis para decodificação de puzzles e mensagens ocultas.
+
 ## Instalação
 
 1. Clone o repositório: `git clone <url-do-repositorio>`
