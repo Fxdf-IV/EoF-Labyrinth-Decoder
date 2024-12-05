@@ -4,6 +4,7 @@ Decodificador de áudio com suporte a análise de frequências e padrões
 
 import numpy as np
 from scipy.io import wavfile
+import soundfile as sf
 import logging
 from typing import Dict, Any
 
@@ -40,8 +41,8 @@ class AudioDecoder:
         Analisa um arquivo de áudio usando vários métodos
         """
         try:
-            # Carregar arquivo WAV
-            sample_rate, audio_data = wavfile.read(file_path)
+            # Carregar arquivo de áudio usando soundfile
+            audio_data, sample_rate = sf.read(file_path)
             
             # Converter para mono se estéreo
             if len(audio_data.shape) > 1:
@@ -60,11 +61,6 @@ class AudioDecoder:
             # Análise espectral
             frequencies = self.analyze_frequencies(audio_data, sample_rate)
             results["Frequências Dominantes"] = frequencies
-            
-            # Detecção de Morse
-            morse = self.detect_morse(audio_data, sample_rate)
-            if morse:
-                results["Código Morse Detectado"] = morse
             
             return results
             
@@ -164,3 +160,52 @@ class AudioDecoder:
         except Exception as e:
             self.logger.error(f"Erro na detecção de Morse: {str(e)}")
             return "Erro na detecção de Morse"
+
+    def detect_tap_code(self, audio_data: np.ndarray, sample_rate: int) -> str:
+        """
+        Detecta Tap Code no áudio
+        """
+        try:
+            # Normalizar áudio
+            audio_data = audio_data / np.max(np.abs(audio_data))
+
+            # Calcular envelope do sinal
+            from scipy.signal import hilbert
+            envelope = np.abs(hilbert(audio_data))
+
+            # Binarizar o sinal
+            threshold = self.morse_config['threshold'] * 1.5  # Ajustar limite
+            binary_signal = envelope > threshold
+
+            # Encontrar pulsos
+            from scipy.signal import find_peaks
+            peaks, _ = find_peaks(envelope, height=threshold, distance=sample_rate*0.05)
+
+            # Converter durações em taps
+            tap_samples = int(self.morse_config['dot_duration'] * sample_rate)
+
+            tap_code = []
+            current_signal = []
+
+            for i in range(1, len(peaks)):
+                duration = peaks[i] - peaks[i-1]
+
+                if duration < tap_samples * 1.5:
+                    current_signal.append('.')
+                elif duration < tap_samples * 3:
+                    current_signal.append(' ')  # Espaço entre letras
+                else:
+                    # Espaço entre palavras
+                    if current_signal:
+                        tap_code.append(''.join(current_signal))
+                        current_signal = []
+
+            # Adicionar último caractere
+            if current_signal:
+                tap_code.append(''.join(current_signal))
+
+            return " ".join(tap_code) if tap_code else "Nenhum Tap Code detectado"
+
+        except Exception as e:
+            self.logger.error(f"Erro na detecção de Tap Code: {str(e)}")
+            return "Erro na detecção de Tap Code"
