@@ -14,7 +14,7 @@ Um decodificador multi-modal para o jogo Enigma of Fear, capaz de processar e de
 - Sistema de logging detalhado
 - Testes unitários abrangentes
 
-![Aba Labirinto](resources/README/aba%20labirinto.jpg)
+![Aba Informações](resources/README/aba%20info.jpg)
 
 ## Decodificadores
 
