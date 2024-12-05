@@ -25,6 +25,7 @@ class TextTab(ttk.Frame):
         
         self.create_widgets()
         self.current_text = ""
+        self.current_char = 0
         
         # Dicionário para mapear posições dos caracteres Braille clicáveis
         self.braille_positions = {}
@@ -137,28 +138,30 @@ class TextTab(ttk.Frame):
         self.instructions.configure(yscrollcommand=self.instructions_scrollbar.set)
         self.instructions_scrollbar.configure(style="Custom.Vertical.TScrollbar")
         
-        # Frame para entrada e saída
-        io_frame = ttk.Frame(self.canvas_frame)
-        io_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        # Frame principal que contém input e output
+        main_frame = ttk.Frame(self.canvas_frame)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        # Frame esquerdo (input) - 40% da largura
+        input_frame = ttk.Frame(main_frame)
+        input_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 2.5))
         
-        # Coluna da esquerda (entrada)
-        input_frame = ttk.Frame(io_frame)
-        input_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
-        
-        input_label = ttk.Label(input_frame,
-                              text="Texto para decodificar:",
-                              foreground='#00ff00',
-                              background='black',
-                              font=('Consolas', 10))
+        # Frame direito (output) - 60% da largura
+        output_frame = ttk.Frame(main_frame)
+        output_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(2.5, 0))
+
+        # Input
+        input_label = ttk.Label(input_frame, text="Texto para processar:", foreground='#00ff00', background='black')
         input_label.pack(anchor=tk.W)
         
         self.input_text = tk.Text(input_frame,
-                                height=10,  
-                                width=40,
+                                height=10,
+                                width=75,
                                 bg='black',
                                 fg='#00ff00',
                                 insertbackground='#00ff00',
-                                font=('Consolas', 12))  
+                                font=('Consolas', 12),
+                                wrap=tk.NONE)
         self.input_text.pack(fill=tk.BOTH, expand=True)
         
         # Scrollbar preta para entrada
@@ -167,30 +170,46 @@ class TextTab(ttk.Frame):
         self.input_text.configure(yscrollcommand=self.input_scrollbar.set)
         self.input_scrollbar.configure(style="Custom.Vertical.TScrollbar")
         
-        # Botão decodificar
-        decode_button = ttk.Button(io_frame,
-                                 text="Decodificar",
-                                 command=self.decode_text,
-                                 style='Custom.TButton')
-        decode_button.pack(side=tk.LEFT, padx=10)
+        # Frame para modo (codificar/decodificar)
+        mode_frame = ttk.Frame(input_frame)
+        mode_frame.pack(side=tk.LEFT, padx=10)
         
-        # Coluna da direita (saída)
-        output_frame = ttk.Frame(io_frame)
-        output_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(10, 0))
+        self.mode_var = tk.StringVar(value="decode")
+        ttk.Radiobutton(
+            mode_frame,
+            text="Decodificar",
+            variable=self.mode_var,
+            value="decode",
+            style="Custom.TRadiobutton"
+        ).pack(side=tk.TOP)
+        ttk.Radiobutton(
+            mode_frame,
+            text="Codificar",
+            variable=self.mode_var,
+            value="encode",
+            style="Custom.TRadiobutton"
+        ).pack(side=tk.TOP)
         
-        output_label = ttk.Label(output_frame,
-                               text="Resultado:",
-                               foreground='#00ff00',
-                               background='black',
-                               font=('Consolas', 10))
+        # Botão processar
+        process_button = ttk.Button(
+            mode_frame,
+            text="Processar",
+            command=self.decode_text,
+            style='Custom.TButton'
+        )
+        process_button.pack(side=tk.TOP, pady=(10, 0))
+        
+        # Output
+        output_label = ttk.Label(output_frame, text="Resultado:", foreground='#00ff00', background='black')
         output_label.pack(anchor=tk.W)
         
         self.output_text = tk.Text(output_frame,
-                                 height=10,  
-                                 width=40,
+                                 height=10,
+                                 width=95,
                                  bg='black',
                                  fg='#00ff00',
-                                 font=('Consolas', 12))  
+                                 font=('Consolas', 12),
+                                 wrap=tk.NONE)
         self.output_text.pack(fill=tk.BOTH, expand=True)
         
         # Scrollbar preta para saída
@@ -228,7 +247,7 @@ class TextTab(ttk.Frame):
             base_instructions = """INSTRUÇÕES PARA DECODIFICAÇÃO BRAILLE:
 
 1. Clique nos caracteres Braille abaixo para adicioná-los ao texto
-2. Clique em "Decodificar"
+2. Clique em "Processar"
 
 Exemplo: ⠨⠨⠓⠑⠇⠇⠕ (decodifica para "HELLO")
 
@@ -287,7 +306,7 @@ Maiúsculo: """
             instructions = """INSTRUÇÕES PARA DECODIFICAÇÃO ASCII:
 
 1. Cole o texto em ASCII para decodificar
-2. Clique em "Decodificar"
+2. Clique em "Processar"
 
 Exemplo: 72 69 76 76 79 (decodifica para "HELLO")
 
@@ -299,7 +318,7 @@ Dica: Cada número representa um caractere na tabela ASCII."""
             instructions = """INSTRUÇÕES PARA DECODIFICAÇÃO BASE64:
 
 1. Cole o texto em Base64 para decodificar
-2. Clique em "Decodificar"
+2. Clique em "Processar"
 
 Exemplo: SGVsbG8= (decodifica para "Hello")
 
@@ -312,7 +331,7 @@ Dica: O texto em Base64 geralmente termina com = ou =="""
 
 1. Cole o texto em código Morse (use . para ponto e - para traço)
 2. Separe as letras com espaço e as palavras com /
-3. Clique em "Decodificar"
+3. Clique em "Processar"
 
 Exemplo: .... . .-.. .-.. --- / .-- --- .-. .-.. -.. (decodifica para "HELLOWORLD")
 
@@ -335,9 +354,9 @@ NÚMEROS:
 
 1. Cole o texto cifrado
 2. Digite o deslocamento (1-25) no início do texto, seguido de :
-3. Clique em "Decodificar"
+3. Clique em "Processar"
 
-Exemplo: 3:KHOOR (decodifica para "HELLO")
+Exemplo: 3:KHOOR (decodifica para "Hello")
 
 Dica: Se não souber o deslocamento, tente números diferentes ou deixe em branco para ver todas as possibilidades."""
             
@@ -347,7 +366,7 @@ Dica: Se não souber o deslocamento, tente números diferentes ou deixe em branc
             instructions = """INSTRUÇÕES PARA DECODIFICAÇÃO ATBASH:
 
 1. Cole o texto cifrado
-2. Clique em "Decodificar"
+2. Clique em "Processar"
 
 A cifra Atbash substitui cada letra pela letra oposta no alfabeto:
 A↔Z, B↔Y, C↔X, D↔W, E↔V, F↔U, G↔T, H↔S, I↔R, J↔Q,
@@ -363,7 +382,7 @@ Exemplo: SVOOL (decodifica para "HELLO")"""
 
 1. Cole o texto cifrado
 2. Digite a chave no início do texto, seguida de :
-3. Clique em "Decodificar"
+3. Clique em "Processar"
 
 Exemplo: KEY:RIJVS (com chave "KEY" decodifica para "HELLO")
 
@@ -377,7 +396,7 @@ tente palavras relacionadas ao contexto ou ao jogo."""
 
 1. Cole o texto em binário (8 bits por caractere)
 2. Os grupos podem ser separados por espaços
-3. Clique em "Decodificar"
+3. Clique em "Processar"
 
 Exemplo: 01001000 01100101 01101100 01101100 01101111
 (decodifica para "Hello")"""
@@ -389,7 +408,7 @@ Exemplo: 01001000 01100101 01101100 01101100 01101111
 
 1. Cole o texto em hexadecimal
 2. Pode usar ou não 0x no início e espaços entre os bytes
-3. Clique em "Decodificar"
+3. Clique em "Processar"
 
 Exemplos: 
 48656C6C6F
@@ -402,7 +421,7 @@ Exemplos:
             instructions = """INSTRUÇÕES PARA DECODIFICAÇÃO ROT13:
 
 1. Cole o texto cifrado
-2. Clique em "Decodificar"
+2. Clique em "Processar"
 
 ROT13 desloca cada letra 13 posições no alfabeto:
 A↔N, B↔O, C↔P, D↔Q, E↔R, F↔S, G↔T, H↔U, I↔V, J↔W,
@@ -414,42 +433,50 @@ Exemplo: URYYB (decodifica para "HELLO")"""
             self.instructions.insert(tk.END, instructions)
             
     def decode_text(self):
-        """Decodifica o texto baseado no tipo selecionado"""
+        """Processa o texto (codifica ou decodifica) baseado no tipo selecionado"""
         input_text = self.input_text.get("1.0", tk.END).strip()
         
         if not input_text:
             return
             
-        # Limpa o campo de saída
+        # Limpa o campo de saída e mostra loading
         self.output_text.delete("1.0", tk.END)
+        self.output_text.insert("1.0", "Processando...")
         
-        # Decodifica baseado no tipo selecionado
+        # Pega o tipo de decodificação e modo selecionado
         decode_type = self.decode_type.get()
+        mode = self.mode_var.get()
         
         try:
-            if decode_type == "braille":
-                result = self.decoder.decode_braille(input_text)
-            elif decode_type == "ascii":
-                result = self.decoder.decode_ascii(input_text)
-            elif decode_type == "base64":
-                result = self.decoder.decode_base64(input_text)
-            elif decode_type == "morse":
-                result = self.decoder.decode_morse(input_text)
-            elif decode_type == "caesar":
-                result = self.decoder.decode_caesar(input_text)
-            elif decode_type == "atbash":
-                result = self.decoder.decode_atbash(input_text)
-            elif decode_type == "vigenere":
-                result = self.decoder.decode_vigenere(input_text)
-            elif decode_type == "binary":
-                result = self.decoder.decode_binary(input_text)
-            elif decode_type == "hex":
-                result = self.decoder.decode_hex(input_text)
-            else:  # rot13
-                result = self.decoder.decode_rot13(input_text)
-                
-            # Mostra o resultado
-            self.output_text.insert("1.0", result)
+            # Chama o método apropriado do decoder
+            method_name = f"{mode}_{decode_type}"
+            decoder_method = getattr(self.decoder, method_name, None)
             
+            if decoder_method:
+                result = decoder_method(input_text)
+                if result is not None:
+                    # Limpa a mensagem de loading
+                    self.output_text.delete("1.0", tk.END)
+                    # Inicia a animação de digitação
+                    self.current_text = result
+                    self.current_char = 0
+                    self.type_next_character()
+                else:
+                    self.output_text.delete("1.0", tk.END)
+                    self.output_text.insert("1.0", "Erro ao processar o texto")
+            else:
+                self.output_text.delete("1.0", tk.END)
+                self.output_text.insert("1.0", f"Método {method_name} não encontrado")
+                
         except Exception as e:
+            self.output_text.delete("1.0", tk.END)
             self.output_text.insert("1.0", f"Erro: {str(e)}")
+            
+    def type_next_character(self):
+        """Digita o próximo caractere com efeito de digitação"""
+        if self.current_char < len(self.current_text):
+            self.output_text.insert(tk.END, self.current_text[self.current_char])
+            self.current_char += 1
+            self.output_text.see(tk.END)  # Rola automaticamente para o final
+            # Velocidade de digitação - 5x mais rápido (2ms entre caracteres)
+            self.after(2, self.type_next_character)
