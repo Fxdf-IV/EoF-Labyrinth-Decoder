@@ -35,7 +35,7 @@ class TextDecoder:
             '⠋': 'f', '⠛': 'g', '⠓': 'h', '⠊': 'i', '⠚': 'j',
             '⠅': 'k', '⠇': 'l', '⠍': 'm', '⠝': 'n', '⠕': 'o',
             '⠏': 'p', '⠟': 'q', '⠗': 'r', '⠎': 's', '⠞': 't',
-            '⠥': 'u', '⠧': 'v', '⠭': 'x', '⠵': 'z',
+            '⠥': 'u', '⠧': 'v', '⠺': 'w', '⠭': 'x', '⠽': 'y', '⠵': 'z',
             '⠼': '[NÚMERO]',  # Indicador de número
             '⠚': '0', '⠁': '1', '⠃': '2', '⠉': '3', '⠙': '4',
             '⠑': '5', '⠋': '6', '⠛': '7', '⠓': '8', '⠊': '9',
@@ -151,9 +151,8 @@ class TextDecoder:
             for char in text.upper():
                 if char.isalpha():
                     # Inverte a posição no alfabeto (A->Z, B->Y, etc)
-                    ascii_val = ord(char) - ord('A')
-                    inverted = 25 - ascii_val
-                    result += chr(inverted + ord('A'))
+                    ascii_val = ord('Z') - (ord(char) - ord('A'))
+                    result += chr(ascii_val)
                 else:
                     result += char
             return result
@@ -246,59 +245,110 @@ class TextDecoder:
     def decode_braille(self, text):
         """Decodifica texto Braille"""
         try:
-            # Dicionário de caracteres Braille
+            # Dicionário de decodificação Braille
             braille_dict = {
-                # Letras minúsculas
                 '⠁': 'a', '⠃': 'b', '⠉': 'c', '⠙': 'd', '⠑': 'e',
                 '⠋': 'f', '⠛': 'g', '⠓': 'h', '⠊': 'i', '⠚': 'j',
                 '⠅': 'k', '⠇': 'l', '⠍': 'm', '⠝': 'n', '⠕': 'o',
                 '⠏': 'p', '⠟': 'q', '⠗': 'r', '⠎': 's', '⠞': 't',
-                '⠥': 'u', '⠧': 'v', '⠺': 'w', '⠭': 'x', '⠽': 'y', '⠵': 'z',
-                
-                # Números
-                '⠼⠚': '0', '⠼⠁': '1', '⠼⠃': '2', '⠼⠉': '3', '⠼⠙': '4',
-                '⠼⠑': '5', '⠼⠋': '6', '⠼⠛': '7', '⠼⠓': '8', '⠼⠊': '9',
-                
-                # Pontuação
-                '⠂': ',', '⠄': "'", '⠲': '.', '⠖': '!', '⠢': '?', '⠱': '-',
-                '⠤': '-', '⠦': '"', '⠴': '"', '⠶': '()', '⠷': '(', '⠾': ')',
-                
-                # Espaço
-                ' ': ' '
+                '⠥': 'u', '⠧': 'v', '⠺': 'w', '⠭': 'x', '⠽': 'y',
+                '⠵': 'z', ' ': ' ', '\n': '\n'
             }
 
-            # Flag para maiúsculo
-            is_caps = False
             result = ""
             i = 0
+            next_upper = False
             
             while i < len(text):
-                # Verifica se é indicador de maiúsculo
-                if text[i:i+2] == '⠨⠨':
-                    is_caps = True
-                    i += 2
+                char = text[i]
+                
+                # Se for indicador de maiúscula
+                if char == '⠨':
+                    next_upper = True
+                    i += 1
                     continue
                 
-                # Verifica se é número
-                if text[i:i+2] in braille_dict:
-                    result += braille_dict[text[i:i+2]]
-                    i += 2
-                # Verifica caractere único
-                elif text[i] in braille_dict:
-                    char = braille_dict[text[i]]
-                    if is_caps:
-                        char = char.upper()
-                        is_caps = False
-                    result += char
-                    i += 1
+                # Se for um caractere Braille válido
+                if char in braille_dict:
+                    letter = braille_dict[char]
+                    if next_upper:
+                        letter = letter.upper()
+                        next_upper = False
+                    result += letter
                 else:
-                    # Se não reconhecer, mantém o caractere original
-                    result += text[i]
-                    i += 1
-
+                    # Preserva caracteres não-Braille
+                    result += char
+                
+                i += 1
+            
             return result
         except Exception as e:
-            return f"Erro na decodificação Braille: {str(e)}"
+            self.logger.error(f"Erro ao decodificar Braille: {str(e)}")
+            return None
+
+    def encode_braille(self, text: str) -> Optional[str]:
+        """Codifica texto em Braille com alinhamento justificado em 50 caracteres"""
+        try:
+            # Dicionário de padrões especiais que devem ser aplicados primeiro
+            special_patterns = {
+                'for': '⠿',
+                'st': '⠌',
+                'of': '⠷',
+                'er': '⠻',
+                'ar': '⠜',
+                'or': '⠪'
+            }
+
+            # Dicionário de codificação Braille para caracteres individuais
+            braille_encode = {
+                'p': '⠏', 'o': '⠕', 'r': '⠗', 't': '⠞', 'a': '⠁', 'e': '⠑',
+                's': '⠎', 'd': '⠙', 'f': '⠋', 'l': '⠇', 'm': '⠍', 'k': '⠅',
+                'v': '⠧', 'x': '⠭', 'c': '⠉', 'b': '⠃', 'i': '⠊', 'g': '⠛',
+                'w': '⠺', 'q': '⠟', 'y': '⠽', 'u': '⠥', 'z': '⠵', 'h': '⠓',
+                'n': '⠝', 'j': '⠚',
+                ' ': '⠀', '\n': '⠀'  # Trata quebra de linha como espaço Braille
+            }
+
+            # Primeiro processa o texto procurando por padrões especiais
+            result = text.lower()
+            for pattern, braille in special_patterns.items():
+                result = result.replace(pattern, braille)
+
+            # Remove todas as quebras de linha existentes
+            result = result.replace('\n', '')
+
+            # Converte para Braille e cria uma única string
+            braille_chars = []
+            for char in result:
+                if char in braille_encode:
+                    braille_chars.append(braille_encode[char])
+                elif char not in '⠿⠌⠷⠻⠜⠪':
+                    braille_chars.append('⠀')
+                else:
+                    braille_chars.append(char)
+
+            # Junta todos os caracteres em uma única string
+            braille_text = ''.join(braille_chars)
+
+            # Quebra em linhas de exatamente 50 caracteres
+            lines = []
+            for i in range(0, len(braille_text), 50):
+                line = braille_text[i:i+50]
+                # Se a linha for menor que 50, completa com espaços Braille
+                if len(line) < 50:
+                    line = line + ('⠀' * (50 - len(line)))
+                lines.append(line)
+
+            # Garante que temos exatamente 10 linhas
+            while len(lines) < 10:
+                lines.append('⠀' * 50)
+            lines = lines[:10]  # Limita a 10 linhas se tiver mais
+
+            return '\n'.join(lines)
+
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Braille: {str(e)}")
+            return None
 
     def decode_ascii(self, text):
         """Decodifica texto em ASCII"""
@@ -379,6 +429,7 @@ class TextDecoder:
                         result += chr(ascii_val)
                     else:
                         result += char
+
                         
                 if len(shifts) == 1:
                     return result
@@ -415,6 +466,9 @@ class TextDecoder:
             key = key.upper()
             text = text.upper()
             
+            if not key:
+                return "Erro: Chave não fornecida"
+                
             result = ''
             key_index = 0
             
@@ -427,6 +481,7 @@ class TextDecoder:
                     ascii_val = ord(char) - shift
                     if ascii_val < ord('A'):
                         ascii_val += 26
+
                         
                     result += chr(ascii_val)
                     key_index += 1
@@ -479,4 +534,171 @@ class TextDecoder:
             return codecs.encode(text, 'rot_13')
         except Exception as e:
             return f"Erro ao decodificar ROT13: {str(e)}"
-"""  """
+
+    def encode_base64(self, text: str) -> Optional[str]:
+        """Codifica texto em Base64"""
+        try:
+            encoded = base64.b64encode(text.encode('utf-8')).decode('utf-8')
+            return encoded
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Base64: {str(e)}")
+            return None
+
+    def encode_hex(self, text: str) -> Optional[str]:
+        """Codifica texto em hexadecimal"""
+        try:
+            encoded = text.encode('utf-8').hex()
+            return encoded
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Hex: {str(e)}")
+            return None
+
+    def encode_binary(self, text: str) -> Optional[str]:
+        """Codifica texto em binário"""
+        try:
+            binary = ' '.join(format(ord(char), '08b') for char in text)
+            return binary
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Binário: {str(e)}")
+            return None
+
+    def encode_morse(self, text: str) -> Optional[str]:
+        """Codifica texto em código Morse"""
+        try:
+            # Inverte o dicionário morse_code
+            morse_encode = {v: k for k, v in self.morse_code.items()}
+            
+            # Converte para maiúsculas e divide em palavras
+            words = text.upper().split()
+            encoded_words = []
+            
+            for word in words:
+                encoded_letters = []
+                for char in word:
+                    if char in morse_encode:
+                        encoded_letters.append(morse_encode[char])
+                    else:
+                        self.logger.warning(f"Caractere não suportado em Morse: {char}")
+                encoded_words.append(' '.join(encoded_letters))
+            
+            return ' / '.join(encoded_words)
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Morse: {str(e)}")
+            return None
+
+    def encode_caesar(self, text: str) -> Optional[str]:
+        """Codifica texto usando cifra de César"""
+        try:
+            if ':' in text:
+                shift, text = text.split(':', 1)
+                shift = int(shift)
+            else:
+                shift = 3  # Deslocamento padrão
+            
+            result = ""
+            for char in text.upper():
+                if char.isalpha():
+                    # Converte para número (0-25), aplica o deslocamento e volta para letra
+                    ascii_offset = ord('A')
+                    shifted = (ord(char) - ascii_offset + shift) % 26
+                    result += chr(shifted + ascii_offset)
+                else:
+                    result += char
+            return result
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar César: {str(e)}")
+            return None
+
+    def encode_atbash(self, text: str) -> Optional[str]:
+        """Codifica texto usando cifra Atbash"""
+        try:
+            result = ""
+            for char in text.upper():
+                if char.isalpha():
+                    # Inverte a posição da letra no alfabeto
+                    ascii_offset = ord('A')
+                    inverted = 25 - (ord(char) - ascii_offset)
+                    result += chr(inverted + ascii_offset)
+                else:
+                    result += char
+            return result
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Atbash: {str(e)}")
+            return None
+
+    def encode_vigenere(self, text: str) -> Optional[str]:
+        """Codifica texto usando cifra de Vigenère"""
+        try:
+            if ':' not in text:
+                raise ValueError("Formato inválido. Use CHAVE:TEXTO")
+            
+            key, text = text.split(':', 1)
+            key = key.upper()
+            text = text.upper()
+            result = ""
+            key_length = len(key)
+            
+            for i, char in enumerate(text):
+                if char.isalpha():
+                    # Pega a letra da chave correspondente
+                    key_char = key[i % key_length]
+                    # Calcula o deslocamento baseado na letra da chave
+                    shift = ord(key_char) - ord('A')
+                    # Aplica o deslocamento
+                    ascii_offset = ord('A')
+                    shifted = (ord(char) - ascii_offset + shift) % 26
+                    result += chr(shifted + ascii_offset)
+                else:
+                    result += char
+            
+            return result
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar Vigenère: {str(e)}")
+            return None
+
+    def encode_rot13(self, text: str) -> Optional[str]:
+        """Codifica texto usando ROT13"""
+        try:
+            return codecs.encode(text, 'rot_13')
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar ROT13: {str(e)}")
+            return None
+
+    def encode_ascii(self, text: str) -> Optional[str]:
+        """Codifica texto em ASCII"""
+        try:
+            return ' '.join(str(ord(char)) for char in text)
+        except Exception as e:
+            self.logger.error(f"Erro ao codificar ASCII: {str(e)}")
+            return None
+
+    def format_braille_grade2(self, text: str, chars_per_line: int = 64) -> str:
+        """Formata texto Braille em grade2 para criar efeito visual"""
+        try:
+            # Primeiro, vamos separar o texto em linhas do tamanho desejado
+            lines = [text[i:i + chars_per_line] for i in range(0, len(text), chars_per_line)]
+            
+            # Para cada caractere Braille, precisamos extrair os pontos
+            # Usamos ⠿ (todos os pontos) e ⠄ (nenhum ponto)
+            result = []
+            
+            for line in lines:
+                # Cada caractere Braille será convertido em pontos
+                formatted_line = ""
+                for char in line:
+                    # Substitui cada caractere Braille por ⠿ ou ⠄
+                    if char in '⠏⠕⠗⠞⠁⠗⠑':  # Caracteres que formam PORTARE
+                        formatted_line += '⠿'
+                    else:
+                        formatted_line += '⠄'
+                
+                # Adiciona a linha formatada
+                if formatted_line.strip('⠄'):  # Só adiciona se tiver algum caractere significativo
+                    result.append(formatted_line)
+            
+            return '\n'.join(result)
+        except Exception as e:
+            self.logger.error(f"Erro ao formatar Braille em grade2: {str(e)}")
+            return text
+
+    # ... Restante do código ...
