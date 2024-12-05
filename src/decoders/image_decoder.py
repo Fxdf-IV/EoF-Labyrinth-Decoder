@@ -111,7 +111,7 @@ class ImageDecoder:
 
     def detect_patterns(self, img: np.ndarray) -> str:
         """
-        Detecta padrões na imagem
+        Detecta padrões na imagem com parâmetros ajustados para maior precisão
         """
         try:
             patterns = []
@@ -119,25 +119,27 @@ class ImageDecoder:
             # Converter para escala de cinza
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             
-            # Detectar bordas
-            edges = cv2.Canny(gray, 50, 150)
+            # Detectar bordas com parâmetros ajustados
+            edges = cv2.Canny(gray, 100, 200)
             
-            # Detectar linhas
-            lines = cv2.HoughLinesP(edges, 1, np.pi/180, 50, 
-                                  minLineLength=100, maxLineGap=10)
+            # Detectar linhas com parâmetros ajustados
+            lines = cv2.HoughLinesP(edges, 1, np.pi/180, 80, 
+                                  minLineLength=50, maxLineGap=5)
             if lines is not None and len(lines) > 0:
                 patterns.append(f"{len(lines)} linhas")
             
-            # Detectar círculos
+            # Detectar círculos com parâmetros ajustados
             circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 20,
-                                     param1=50, param2=30, 
-                                     minRadius=0, maxRadius=0)
+                                     param1=100, param2=30, 
+                                     minRadius=5, maxRadius=100)
             if circles is not None:
                 patterns.append(f"{len(circles[0])} círculos")
             
-            # Detectar contornos
+            # Detectar contornos com filtragem adicional
             contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, 
                                          cv2.CHAIN_APPROX_SIMPLE)
+            # Filtrar contornos pequenos
+            contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 50]
             if len(contours) > 0:
                 patterns.append(f"{len(contours)} contornos")
             
@@ -152,6 +154,7 @@ class ImageDecoder:
         Detecta QR Code na imagem usando OpenCV com pré-processamento agressivo
         """
         try:
+            print("Iniciando detecção de QR Code...")  # Log de depuração
             # Converter para escala de cinza
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             
@@ -175,7 +178,7 @@ class ImageDecoder:
             
             # 4. Binarização adaptativa
             adaptive = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                          cv2.THRESH_BINARY, 11, 2)
+                                              cv2.THRESH_BINARY, 11, 2)
             processed_images.append(adaptive)
             
             # 5. Desfoque + Binarização
@@ -201,14 +204,17 @@ class ImageDecoder:
                     # Tentar detectar
                     retval, decoded_info, points = qr_detector.detectAndDecode(resized)
                     if retval and decoded_info:
+                        print(f"QR Code detectado: {decoded_info}")  # Log de depuração
                         return decoded_info
                     
                     # Tentar com detectAndDecodeMulti
                     retval, decoded_info, points, _ = qr_detector.detectAndDecodeMulti(resized)
                     if retval and decoded_info:
                         if isinstance(decoded_info, str):
+                            print(f"QR Code detectado (multi): {decoded_info}")  # Log de depuração
                             return decoded_info
                         elif isinstance(decoded_info, list) and any(decoded_info):
+                            print(f"QR Codes detectados (multi): {decoded_info}")  # Log de depuração
                             return next(d for d in decoded_info if d)
             
             # Se não encontrou, tentar uma última abordagem com detecção de contornos
@@ -218,15 +224,26 @@ class ImageDecoder:
                 
                 # Filtrar contornos quadrados
                 for contour in contours:
-                    # Aproximar contorno
+                    # Calcular área e perímetro
+                    area = cv2.contourArea(contour)
                     peri = cv2.arcLength(contour, True)
+                    
+                    # Se o contorno for muito pequeno, ignorar
+                    if area < 10:
+                        continue
+                        
+                    # Aproximar o contorno
                     approx = cv2.approxPolyDP(contour, 0.04 * peri, True)
                     
-                    # Se for aproximadamente um quadrado
+                    # Verificar se é aproximadamente um quadrado
                     if len(approx) == 4:
-                        # Extrair região
+                        # Calcular a razão entre largura e altura
                         x, y, w, h = cv2.boundingRect(contour)
-                        if w > 20 and h > 20:  # Ignorar regiões muito pequenas
+                        aspect_ratio = float(w)/h
+                        
+                        # Se for aproximadamente quadrado
+                        if 0.8 < aspect_ratio < 1.2 and area < 200:
+                            # Extrair região
                             qr_region = processed[y:y+h, x:x+w]
                             
                             # Redimensionar região
@@ -235,13 +252,14 @@ class ImageDecoder:
                             # Tentar decodificar
                             retval, decoded_info, _ = qr_detector.detectAndDecode(qr_region)
                             if retval and decoded_info:
+                                print(f"QR Code detectado na região: {decoded_info}")  # Log de depuração
                                 return decoded_info
             
-            return "Nenhum QR Code detectado"
-            
+            print("Nenhum QR Code detectado após todas as tentativas.")  # Log de depuração
+            return "Falha ao detectar QR-Codes. Tente usar seu dispositivo móvel para escanear o código."
         except Exception as e:
             self.logger.error(f"Erro na detecção de QR Code: {str(e)}")
-            return "Nenhum QR Code detectado"
+            return "Falha ao detectar QR-Codes. Tente usar seu dispositivo móvel para escanear o código."
 
     def detect_text(self, img: np.ndarray) -> str:
         """
@@ -420,9 +438,6 @@ class ImageDecoder:
                             if len(current_group) > 2:
                                 groups.append(current_group)
                             current_group = [centers[i]]
-                    
-                    if len(current_group) > 2:
-                        groups.append(current_group)
                     
                     if groups:
                         findings.append("Padrões quadrados agrupados detectados")
