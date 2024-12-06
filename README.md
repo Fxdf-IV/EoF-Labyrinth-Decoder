@@ -1,30 +1,31 @@
 # EoF Enigma Decoder
 
-Um decodificador multi-modal para o jogo Enigma of Fear, capaz de processar e decodificar diversos tipos de puzzles e mensagens ocultas.
+Pensei como o Samuel resolveria esse problema, e então decidi agir como ele, desenvolvendo este programa para isso! 
+O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fear, capaz de processar e decodificar os puzzles de itens amaldiçoados em que o Samuel está encarregado de resolver.
 
 ## Características
 
-- Interface gráfica com tema Matrix
+- Interface gráfica com tema Matrix (Para dar um charme estilo Samuel Hacker)
 - Suporte para múltiplos tipos de decodificação:
-  - Labirinto
-  - Imagem
-  - Texto
-  - Áudio
-- Análise avançada de padrões
+  - Labirinto de pastas
+  - Imagens
+  - Textos
+  - Áudios
+- Análise de padrões
 - Sistema de logging detalhado
 - Testes unitários abrangentes
 
 ## Decodificadores
 
 ### Labirinto
-- Exploração automática de caminhos
+- Exploração automática de caminhos de pastas
 - Validação de sequências de palavras-chave
-- Mapeamento de caminhos conhecidos do jogo
+- Dicas técnicas para ajudar na solução
 
 ![Aba Labirinto](resources/README/aba%20labirinto.jpg)
 
 ### Imagem
-- Detecção de QR codes e códigos de barras
+- Detecção de QR codes e códigos de barras (INOPERANTE)
 - OCR para texto em imagens
 - Análise de padrões visuais
 - Detecção de sigilos e símbolos
@@ -78,3 +79,9 @@ Sinta-se à vontade para contribuir com melhorias, correções de bugs ou novas 
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
+
+## Observações
+
+- Este projeto foi desenvolvido com o intuito de auxiliar o jogador a ter uma experiência mais facil para resolver os puzzles de itens amaldiçoados no jogo Enigma of Fear. O objetivo principal é tornar o jogo mais interessante e divertido para todos os jogadores, independentemente de suas habilidades de programação ou conhecimentos de informática ou prática em resolver ARGS.
+
+- Muitas das funcioanlidades mais complexas, como o uso de QR codes e código de barras não funcionam, pois seriam necessários recursos extras, que nesse caso não foram implementados. Já que o foco do projeto é tornar o jogo mais divertido, isso nao seria um problema para o jogador.
