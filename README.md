@@ -60,32 +60,6 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Python 3.13+
 - Bibliotecas: tkinter, pygame, matplotlib, soundfile, numpy, scipy, Pillow
 
-## Download e Uso
-
-1. Acesse a página de releases do repositório no GitHub.
-2. Baixe o arquivo executável mais recente para o seu sistema operacional.
-3. Execute o arquivo baixado para iniciar o aplicativo.
-
-O aplicativo é auto-contido e não requer instalação adicional de dependências. Basta executar o arquivo e usar as funcionalidades disponíveis para decodificação de puzzles e mensagens ocultas.
-
-## Instalação
-
-1. Na página do projeto no GitHub:
-   - Clique na seção "Releases" no lado direito
-   - Ou [clique aqui](../../releases) para ir direto
-2. Em "Assets" da release mais recente:
-   - Clique em `EoFLabyrinthDecoder.exe` para baixar
-3. Depois de baixar:
-   - Não precisa instalar
-   - Você pode mover o arquivo para qualquer pasta
-   - Basta dar duplo clique para executar
-4. Na primeira execução:
-   - O Windows vai mostrar um aviso de segurança
-   - É normal, pois o programa não tem certificado digital
-   - Clique em "Mais informações"
-   - Depois clique em "Executar assim mesmo"
-   OBS: Juro que não estou te hackeando!
-
 ## Contribuição
 
 Sinta-se à vontade para contribuir com melhorias, correções de bugs ou novas funcionalidades. Para isso, faça um fork do repositório, crie uma branch com suas alterações e envie um pull request.
