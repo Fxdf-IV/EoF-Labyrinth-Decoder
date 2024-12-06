@@ -5,14 +5,24 @@ Aba inicial com informações sobre o labirinto
 import tkinter as tk
 from tkinter import ttk
 import os
+import sys
 from PIL import Image, ImageTk
 from pathlib import Path
+
+def get_asset_path():
+    """Retorna o caminho correto para a pasta assets, seja em desenvolvimento ou no executável"""
+    if getattr(sys, 'frozen', False):
+        # Se estiver rodando como executável
+        base_path = Path(sys._MEIPASS)
+        return base_path / "assets"
+    else:
+        # Se estiver em desenvolvimento
+        return Path(__file__).parent.parent / "assets"
 
 class IntroTab(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        # Obtém o caminho base do projeto
-        self.base_path = Path(__file__).parent.parent.parent
+        self.assets_path = get_asset_path()
         
         # Configurar estilo global das scrollbars
         style = ttk.Style()
@@ -88,7 +98,7 @@ class IntroTab(ttk.Frame):
 
         # Imagem dos itens
         try:
-            img_path = self.base_path / "src" / "assets" / "images" / "itens.jpg"
+            img_path = self.assets_path / "images" / "itens.jpg"
             img_itens = Image.open(str(img_path))
             img_itens = ImageTk.PhotoImage(img_itens)
             itens_label = ttk.Label(self.inner_frame, image=img_itens)
@@ -137,7 +147,7 @@ class IntroTab(ttk.Frame):
         
         # Alfabeto
         try:
-            img_path = self.base_path / "src" / "assets" / "images" / "alfabeto.jpg"
+            img_path = self.assets_path / "images" / "alfabeto.jpg"
             img_alfabeto = Image.open(str(img_path))
             img_alfabeto = ImageTk.PhotoImage(img_alfabeto)
             alfabeto_label = ttk.Label(self.inner_frame, image=img_alfabeto)
