@@ -6,7 +6,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 import os
-from ..decoders.labyrinth_decoder import LabyrinthDecoder
+from decoders.labyrinth_decoder import LabyrinthDecoder
 
 class LabyrinthTab(ttk.Frame):
     def __init__(self, parent):
