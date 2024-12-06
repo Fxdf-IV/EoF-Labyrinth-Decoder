@@ -7,10 +7,6 @@ from tkinter import ttk
 import sys
 import os
 
-# Adiciona o diretório raiz ao PYTHONPATH
-root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(root_dir)
-
 from src.ui.labyrinth_tab import LabyrinthTab
 from src.ui.intro_tab import IntroTab
 from src.ui.text_tab import TextTab

@@ -4,7 +4,7 @@ Aba do decodificador de texto
 
 import tkinter as tk
 from tkinter import ttk
-from ..decoders.text_decoder import TextDecoder
+from decoders.text_decoder import TextDecoder
 
 class TextTab(ttk.Frame):
     def __init__(self, parent):
