@@ -62,14 +62,6 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 
 ## Download e Uso
 
-1. Acesse a página de releases do repositório no GitHub.
-2. Baixe o arquivo executável mais recente para o seu sistema operacional.
-3. Execute o arquivo baixado para iniciar o aplicativo.
-
-O aplicativo é auto-contido e não requer instalação adicional de dependências. Basta executar o arquivo e usar as funcionalidades disponíveis para decodificação de puzzles e mensagens ocultas.
-
-## Instalação
-
 1. Na página do projeto no GitHub:
    - Clique na seção "Releases" no lado direito
    - Ou [clique aqui](../../releases) para ir direto

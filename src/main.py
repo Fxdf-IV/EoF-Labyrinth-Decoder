@@ -5,6 +5,7 @@ Arquivo principal do EoF Enigma Decoder
 import tkinter as tk
 import os
 import sys
+import ui
 from pathlib import Path
 
 # Adicionar o diretório src ao PYTHONPATH
