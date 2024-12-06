@@ -68,9 +68,21 @@ O aplicativo é auto-contido e não requer instalação adicional de dependênci
 
 ## Instalação
 
-1. Clone o repositório: `git clone <url-do-repositorio>`
-2. Instale as dependências: `pip install -r requirements.txt`
-3. Execute o aplicativo: `python main.py`
+1. Na página do projeto no GitHub:
+   - Clique na seção "Releases" no lado direito
+   - Ou [clique aqui](../../releases) para ir direto
+2. Em "Assets" da release mais recente:
+   - Clique em `EoFLabyrinthDecoder.exe` para baixar
+3. Depois de baixar:
+   - Não precisa instalar
+   - Você pode mover o arquivo para qualquer pasta
+   - Basta dar duplo clique para executar
+4. Na primeira execução:
+   - O Windows vai mostrar um aviso de segurança
+   - É normal, pois o programa não tem certificado digital
+   - Clique em "Mais informações"
+   - Depois clique em "Executar assim mesmo"
+   OBS: Juro que não estou te hackeando!
 
 ## Contribuição
 
