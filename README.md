@@ -67,16 +67,17 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
    - Ou [clique aqui](../../releases) para ir direto
 2. Em "Assets" da release mais recente:
    - Clique em `EoFLabyrinthDecoder.exe` para baixar
+   - Se o Chrome bloquear o download:
+     - Clique nos 3 pontos ao lado do aviso
+     - Selecione "Manter assim mesmo"
+     - Se aparecer outro aviso, clique em "Mostrar mais" e depois "Manter mesmo assim"
 3. Depois de baixar:
    - Não precisa instalar
    - Você pode mover o arquivo para qualquer pasta
-   - Basta dar duplo clique para executar
-4. Na primeira execução:
-   - O Windows vai mostrar um aviso de segurança
-   - É normal, pois o programa não tem certificado digital
-   - Clique em "Mais informações"
-   - Depois clique em "Executar assim mesmo"
-   OBS: Juro que não estou te hackeando!
+   - Ao tentar executar, o Windows Defender pode mostrar um aviso
+   - Clique em "Mais informações" e depois em "Executar assim mesmo"
+   
+> **Nota sobre segurança**: O aplicativo é marcado como não seguro porque é um executável não assinado digitalmente (certificados digitais são caros). O código fonte está disponível aqui no GitHub para verificação. O programa é 100% seguro e não faz nada além do que está documentado.
 
 ## Contribuição
 
