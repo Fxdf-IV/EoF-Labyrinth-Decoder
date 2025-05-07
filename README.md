@@ -15,7 +15,7 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Sistema de logging detalhado
 - Testes unitários abrangentes
 
-![Aba Informações](resources/README/aba%20info.jpg)
+![Aba Informações](resources/README/aba_info.jpg)
 
 ## Decodificadores
 
@@ -24,7 +24,7 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Validação de sequências de palavras-chave
 - Dicas técnicas para ajudar na solução
 
-![Aba Labirinto](resources/README/aba%20labirinto.jpg)
+![Aba Labirinto](resources/README/aba_labirinto.jpg)
 
 ### Imagem
 - Detecção de QR codes e códigos de barras (INOPERANTE)
@@ -33,7 +33,7 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Detecção de sigilos e símbolos
 - Análise de cores e padrões
 
-![Aba Imagem](resources/README/aba%20imagem.jpg)
+![Aba Imagem](resources/README/aba_image.jpg)
 
 ### Texto
 - Decodificação automática de:
@@ -46,14 +46,14 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Análise de padrões de texto
 - Detecção de sequências repetidas
 
-![Aba Texto](resources/README/aba%20texto.jpg)
+![Aba Texto](resources/README/aba_texto.jpg)
 
 ### Áudio
 - Análise espectral
 - Análise de frequências
 - Análise de amplitude
 
-![Aba Áudio](resources/README/aba%20audio.jpg)
+![Aba Áudio](resources/README/aba_audio.jpg)
 
 ## Requisitos
 
@@ -91,4 +91,4 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para m
 
 - Este projeto foi desenvolvido com o intuito de auxiliar o jogador a ter uma experiência mais facil para resolver os puzzles de itens amaldiçoados no jogo Enigma of Fear. O objetivo principal é tornar o jogo mais interessante e divertido para todos os jogadores, independentemente de suas habilidades de programação ou conhecimentos de informática ou prática em resolver ARGS.
 
-- Muitas das funcioanlidades mais complexas, como o uso de QR codes e código de barras não funcionam, pois seriam necessários recursos extras, que nesse caso não foram implementados. Já que o foco do projeto é tornar o jogo mais divertido, isso nao seria um problema para o jogador.
+- Muitas das funcioanlidades mais complexas, como o uso de QR codes e código de barras não funcionam, pois seriam necessários recursos extras, que nesse caso não foram implementados. Já que o foco do projeto é tornar o jogo mais divertido, espero isso nao seria um problema para o jogador.
