@@ -33,7 +33,7 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Detecção de sigilos e símbolos
 - Análise de cores e padrões
 
-![Aba Imagem](resources/README/aba%20image.jpg)
+![Aba Imagem](resources/README/aba%20imagem.jpg)
 
 ### Texto
 - Decodificação automática de:
