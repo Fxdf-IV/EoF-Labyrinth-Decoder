@@ -46,7 +46,7 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
 - Análise de padrões de texto
 - Detecção de sequências repetidas
 
-![Aba Informações](resources/README/aba%20info.jpg)
+![Aba Texto](resources/README/aba%20texto.jpg)
 
 ### Áudio
 - Análise espectral
@@ -76,7 +76,7 @@ O EoF Labyrinth Decoder é um decodificador multi-modal para o jogo Enigma of Fe
    - Você pode mover o arquivo para qualquer pasta
    - Ao tentar executar, o Windows Defender pode mostrar um aviso
    - Clique em "Mais informações" e depois em "Executar assim mesmo"
-   
+
 > **Nota sobre segurança**: O aplicativo é marcado como não seguro porque é um executável não assinado digitalmente (certificados digitais são caros). O código fonte está disponível aqui no GitHub para verificação. O programa é 100% seguro e não faz nada além do que está documentado.
 
 ## Contribuição
